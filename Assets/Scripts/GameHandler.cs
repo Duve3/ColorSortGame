@@ -27,6 +27,7 @@ public class GameHandler : MonoBehaviour
         new Color(145f / 255f, 25f  / 255f, 190f / 255f), // purple
         new Color(20f  / 255f, 195f / 255f, 180f / 255f), // aqua
         new Color(100f / 255f, 50f  / 255f, 15f  / 255f), // brown
+        new Color(255f / 255f, 255f / 255f, 255f / 255f), // white
     };
 
     private Stack<List<GameObject>> MoveList = new() { };
