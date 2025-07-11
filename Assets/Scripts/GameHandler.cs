@@ -92,8 +92,8 @@ public class GameHandler : MonoBehaviour
     {
         int val = (int)Mathf.Floor(LevelCount / 3) + 5;
 
-        // we cant display more than 10!
-        if (val > 10) { return 10; }
+        // we cant display more than 12!
+        if (val > 12) { return 12; }
         return val;
     }
 
