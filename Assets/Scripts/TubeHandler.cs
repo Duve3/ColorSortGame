@@ -12,6 +12,13 @@ public class TubeHandler : MonoBehaviour
     public Image CheckmarkImage;
     public Canvas Canvas;
 
+    private SpriteRenderer renderer;
+
+    void Awake()
+    {
+        renderer = GetComponent<SpriteRenderer>();
+    }
+
     public bool AddBall(GameObject ball, bool? force = null)
     {
         if (solved) { return false; } // we do not care
@@ -56,10 +63,12 @@ public class TubeHandler : MonoBehaviour
         float sum = 0;
         foreach (GameObject b in balls)
         {
-            sum += b.transform.lossyScale.y + 0.1f;
+            sum += b.transform.lossyScale.y + 0.05f;
         }
 
-        float y = sum + transform.position.y - (ball.transform.localScale.y / 2);
+        float height = renderer.bounds.size.y;
+
+        float y = sum + (transform.position.y - (height / 2)) - (ball.transform.localScale.y / 2) + 0.1f;
         Vector3 newPos = new Vector3(transform.position.x, y, 0);
 
         iTween.MoveTo(ball, newPos, 0.5f);
@@ -111,11 +120,34 @@ public class TubeHandler : MonoBehaviour
 
         dup.SetActive(true);
 
-        
+
         dup.GetComponent<CheckmarkHandler>().BeginDestroy();
     }
 
-    private bool CheckCompletion()
+    public void Uncomplete()
+    {
+        /* 
+         * used when redrawing the tube to now be incomplete
+         */
+
+        SpriteRenderer[] childObjects = GetComponentsInChildren<SpriteRenderer>();
+
+        // just setting all our colors to normal alpha values!
+        foreach (SpriteRenderer cRender in childObjects)
+        {
+            cRender.color = new Color(cRender.color.r, cRender.color.g, cRender.color.b, 1f);
+        }
+
+        foreach (GameObject b in balls)
+        {
+            SpriteRenderer cRender = b.GetComponent<SpriteRenderer>();
+            cRender.color = new Color(cRender.color.r, cRender.color.g, cRender.color.b, 1f);
+        }
+
+        solved = false;
+    }
+
+    public bool CheckCompletion()
     {
         if (balls.Count < size)
         {

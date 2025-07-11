@@ -87,6 +87,8 @@ public class MakerHandler : MonoBehaviour
                 y = topRowY;
             }
 
+            y += (obj.transform.localScale.y);
+
             float x = (spacing / 2) + (spacing * truei);
             Debug.Log("x: " + x + " ; truei: " + truei + " ; y: " + y);
             obj.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(x, 0, 0));
@@ -138,6 +140,7 @@ public class MakerHandler : MonoBehaviour
         for (int j = 0; j < Tubes.Count - emptyTube; j++)
         {
             GameObject tube = Tubes[j];
+            TubeHandler t_h = tube.GetComponent<TubeHandler>();
             for (int i = 0; i < tubeLimit; i++)
             {
                 GameObject newBall = Instantiate(BallPrefab);
@@ -156,7 +159,41 @@ public class MakerHandler : MonoBehaviour
                 }
 
                 newBall.GetComponent<SpriteRenderer>().color = chosenColor;
-                tube.GetComponent<TubeHandler>().AddBall(newBall, true);
+                t_h.AddBall(newBall, true);
+            }
+
+            if (t_h.CheckCompletion())
+            {
+                dictionary[t_h.balls.Peek().GetComponent<SpriteRenderer>().color] -= tubeLimit;
+
+                // clear out our list from balls
+                foreach (GameObject b in t_h.balls)
+                {
+                    t_h.PopBall();
+                }
+
+                // just rerun the above code now, hopefully it works correctly this time!!
+                for (int i = 0; i < tubeLimit; i++)
+                {
+                    GameObject newBall = Instantiate(BallPrefab);
+                    Color chosenColor = Colors[Random.Range(0, Colors.Count)];
+
+                    if (Colors.Count == Tubes.Count - emptyTube)
+                    {
+                        while (dictionary[chosenColor] >= tubeLimit)
+                        {
+                            chosenColor = Colors[Random.Range(0, Colors.Count)];
+                        }
+                        dictionary[chosenColor] += 1;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("WARNING: Maybe impossible sort! (# of colors!)");
+                    }
+
+                    newBall.GetComponent<SpriteRenderer>().color = chosenColor;
+                    t_h.AddBall(newBall, true);
+                }
             }
             
         }

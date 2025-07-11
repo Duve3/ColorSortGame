@@ -31,6 +31,8 @@ public class GameHandler : MonoBehaviour
 
     private Stack<List<GameObject>> MoveList = new() { };
 
+    private bool shakingBall = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -109,16 +111,9 @@ public class GameHandler : MonoBehaviour
             return;  // this means that our tube is empty (or completed!)
         }
 
-        float tube_height = 0;
+        float tube_height = tube.GetComponent<SpriteRenderer>().bounds.size.y;
 
-        Transform[] childObjects = tube.GetComponentsInChildren<Transform>();
-        foreach (Transform child in childObjects)
-        {
-            Debug.Log("Adding another child to height: " + child.localScale.y);
-            tube_height += child.localScale.y;
-        }
-
-        float top = tube.transform.position.y + tube_height;
+        float top = tube.transform.position.y + (tube_height / 2);
 
         Debug.Log("Top: " + top + " ; y: " + tube.transform.position.y + " ; height: " + tube_height);
 
@@ -223,6 +218,12 @@ public class GameHandler : MonoBehaviour
             selectedBall = null;
         }
 
+        // uncomplete any completed tubes
+        if (move[2].GetComponent<TubeHandler>().solved)
+        {
+            move[2].GetComponent<TubeHandler>().Uncomplete();
+        }
+
         // remove the ball then move it to the other tube
         move[2].GetComponent<TubeHandler>().PopBall();
         move[1].GetComponent<TubeHandler>().AddBall(move[0], true);
@@ -236,7 +237,11 @@ public class GameHandler : MonoBehaviour
     }
 
     IEnumerator ShakeBall(GameObject ball)
-    {   
+    {
+        if (shakingBall) { yield break; }
+
+        shakingBall = true;
+
         Vector3 ballLeft = ball.transform.position + new Vector3(0.1f, 0, 0);
         Vector3 ballRight = ball.transform.position + new Vector3(-0.1f, 0, 0);
         Vector3 ballOriginal = ball.transform.position;
@@ -248,6 +253,8 @@ public class GameHandler : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         iTween.MoveTo(ball, ballOriginal, 0.1f);
+
+        shakingBall = false;
     }
 
     // ONLY FOR USAGE ON THE "RESTART?" BUTTON

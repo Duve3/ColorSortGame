@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c3774468831974344a52f613c42cc81c
+guid: 43fd022a931508944adbf995059af512
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5390781785914689683
-    second: favicon_0
+      213: 1121680344861991684
+    second: GoodTube_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: favicon_0
+      name: GoodTube_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 96
-        height: 96
+        width: 448
+        height: 1892
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 39847130977efca40800000000000000
-      internalID: 5390781785914689683
+      spriteID: 403690ba452019f00800000000000000
+      internalID: 1121680344861991684
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      favicon_0: 5390781785914689683
+      GoodTube_0: 1121680344861991684
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
