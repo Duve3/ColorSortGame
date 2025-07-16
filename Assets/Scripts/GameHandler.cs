@@ -202,8 +202,6 @@ public class GameHandler : MonoBehaviour
         IncrementLevel();
         GameMakerHandler.CreateGame(GetNumberOfTubes());
         GameMakerHandler.GenerateFill(Colors);
-
-        
     }
 
     public void UndoMove()
@@ -265,9 +263,16 @@ public class GameHandler : MonoBehaviour
          * ONLY USE ON THE "RESTART?" BUTTON!!!!!
          */
 
+        // removes the current selected ball
+        if (selectedBall) {
+            selectedBall.GetComponent<BallData>().previousTube.GetComponent<TubeHandler>().AddBall(selectedBall, true);
+            selectedBall = null;
+        }
+
         // basically just "nextLevel" but doesnt increment level counter
+        // ^ and uses the previous fill
         GameMakerHandler.ResetTubes();
         GameMakerHandler.CreateGame(GetNumberOfTubes());
-        GameMakerHandler.GenerateFill(Colors);
+        GameMakerHandler.RecreateMostRecentFill();
     }
 }

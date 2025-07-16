@@ -9,12 +9,6 @@ public class SceneChanger : MonoBehaviour
 
     private int loadLevel;
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void FadeToScene(int index)
     {
         loadLevel = index;

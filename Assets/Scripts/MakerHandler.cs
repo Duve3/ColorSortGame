@@ -21,6 +21,8 @@ public class MakerHandler : MonoBehaviour
     public GameObject TopRowPositioner;
     public GameObject BottomRowPositioner;
 
+    public List<List<Color>> MostRecentFill = new();
+
     private float bottomRowY;
     private float topRowY;
 
@@ -37,6 +39,15 @@ public class MakerHandler : MonoBehaviour
         {
             List2.Add(c);
         }
+    }
+
+    public int GetNumberOfEmptyTubes(int TubeCount)
+    {
+        if (TubeCount <= 4)
+        {
+            return 1;
+        }
+        return 2;
     }
 
     // unity has its own "reset" thing but i dont trust it here
@@ -112,12 +123,7 @@ public class MakerHandler : MonoBehaviour
 
         int numColors = Colors.Count;
 
-        int emptyTube = 1;
-
-        if (Tubes.Count > 4)
-        {
-            emptyTube = 2;
-        }
+        int emptyTube = GetNumberOfEmptyTubes(Tubes.Count);
 
         if (numColors >= Tubes.Count - emptyTube)
         {
@@ -195,8 +201,38 @@ public class MakerHandler : MonoBehaviour
                     t_h.AddBall(newBall, true);
                 }
             }
-            
+
+            List<Color> tFill = new();
+            foreach (GameObject ball in t_h.balls)
+            {
+                tFill.Add(ball.GetComponent<SpriteRenderer>().color);
+            }
+
+            tFill.Reverse();
+            MostRecentFill.Add(tFill);
         }
 
+    }
+
+    public void RecreateMostRecentFill()
+    {
+        int emptyTubes = GetNumberOfEmptyTubes(Tubes.Count);
+
+        for (var j = 0; j < Tubes.Count - emptyTubes; j++)
+        {
+            GameObject tube = Tubes[j];
+            TubeHandler t_h = tube.GetComponent<TubeHandler>();
+
+            List<Color> tFill = MostRecentFill[j];
+
+            foreach (Color c in tFill)
+            {
+                GameObject ball = Instantiate(BallPrefab);
+
+                ball.GetComponent<SpriteRenderer>().color = c;
+
+                t_h.AddBall(ball, true);
+            }
+        }
     }
 }

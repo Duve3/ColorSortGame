@@ -12,7 +12,7 @@ public class TubeHandler : MonoBehaviour
     public Image CheckmarkImage;
     public Canvas Canvas;
 
-    private SpriteRenderer renderer;
+    private new SpriteRenderer renderer;
 
     void Awake()
     {
