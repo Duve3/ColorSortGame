@@ -47,6 +47,7 @@ public class MakerHandler : MonoBehaviour
         {
             return 1;
         }
+
         return 2;
     }
 
@@ -76,7 +77,8 @@ public class MakerHandler : MonoBehaviour
             divisor = RowLimit;
         }
 
-        float spacing = Screen.width / divisor;
+        float padding = 20;
+        float spacing = (Screen.width - padding) / divisor;
 
         Debug.Log("creating ; " + spacing);
         for (int i = 0; i < numTubes; i++)
@@ -100,14 +102,12 @@ public class MakerHandler : MonoBehaviour
 
             y += (obj.transform.localScale.y);
 
-            float x = (spacing / 2) + (spacing * truei);
+            float x = (padding / 2) + (spacing / 2) + (spacing * truei);
             Debug.Log("x: " + x + " ; truei: " + truei + " ; y: " + y);
             obj.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(x, 0, 0));
 
             // fix z value (ensures that its 0) and put in y value, (y is now WORLD Pos not screen pos)
             obj.transform.position = new Vector3(obj.transform.position.x, y, 0);
-            
-            
         }
     }
 
@@ -120,6 +120,8 @@ public class MakerHandler : MonoBehaviour
         // has to be done because we do destructive stuff with Colors
         List<Color> Colors = new() { };
         CopyTo(OldColors, Colors);
+
+        MostRecentFill = new List<List<Color>>();
 
         int numColors = Colors.Count;
 
@@ -135,13 +137,11 @@ public class MakerHandler : MonoBehaviour
         int tubeLimit = Tubes[0].GetComponent<TubeHandler>().size;
 
         Dictionary<Color, int> dictionary = new();
-
         foreach (Color c in Colors)
         {
             dictionary.Add(c, 0);
         }
 
-        
 
         for (int j = 0; j < Tubes.Count - emptyTube; j++)
         {
@@ -202,6 +202,7 @@ public class MakerHandler : MonoBehaviour
                 }
             }
 
+            
             List<Color> tFill = new();
             foreach (GameObject ball in t_h.balls)
             {
@@ -212,11 +213,26 @@ public class MakerHandler : MonoBehaviour
             MostRecentFill.Add(tFill);
         }
 
+        string mrf = "";
+        foreach (List<Color> lc in MostRecentFill)
+        {
+            mrf += "(" + string.Join(", ", lc) + "), ";
+        }
+        Debug.Log("MOST RECENT FILL WRITE: " + mrf);
     }
 
     public void RecreateMostRecentFill()
     {
         int emptyTubes = GetNumberOfEmptyTubes(Tubes.Count);
+
+
+        string mrf = "";
+        foreach (List<Color> lc in MostRecentFill)
+        {
+            mrf += "(" + string.Join(", ", lc) + "), ";
+        }
+        Debug.Log("MOST RECENT FILL READ: " + mrf);
+
 
         for (var j = 0; j < Tubes.Count - emptyTubes; j++)
         {

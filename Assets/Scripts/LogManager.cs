@@ -12,28 +12,14 @@ public class LogManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         logFilePath = Path.Combine(Application.persistentDataPath, "log.txt");
 
+        // app start and important info
+        string dInfo = $"{System.DateTime.Now} [Log] APP START\n" +
+                       $"\tDevice: {SystemInfo.deviceModel}\n" +
+                       $"\tPlatform: {Application.platform}\n" +
+                       $"\tUnity version: {Application.unityVersion}\n" +
+                       $"\tGame version: {Application.version}";
 
-        // get version data
-        string VersionFile = Path.Combine(Application.streamingAssetsPath, "VERSION.txt");
-
-        bool Exists = File.Exists(VersionFile);
-        if (!Exists)
-        {
-            File.WriteAllText(logFilePath, $"FAILED TO FIND VERSION FILE!!!");
-            Debug.Log($"FAILED TO FIND VERSION FILE!!!");
-        }
-
-        version = File.ReadAllText(VersionFile);
-
-
-        // write app start and important info
-        string dInfo = $"Device: {SystemInfo.deviceModel}\n" +
-                       $"Platform: {Application.platform}\n" +
-                       $"Unity version: {Application.unityVersion}\n" +
-                       $"Game version: {version}\n";
-
-        File.WriteAllText(logFilePath, $"{System.DateTime.Now} [Log] APP START\n");
-        File.WriteAllText(logFilePath, dInfo);
+        File.AppendAllText(logFilePath, dInfo + "\n");
         Debug.Log(dInfo);
 
         // This catches all Debug.Logs
