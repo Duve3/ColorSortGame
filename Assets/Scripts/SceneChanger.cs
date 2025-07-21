@@ -9,6 +9,11 @@ public class SceneChanger : MonoBehaviour
 
     private int loadLevel;
 
+    void Awake()
+    {
+        transform.SetAsLastSibling();
+    }
+
     public void FadeToScene(int index)
     {
         loadLevel = index;
