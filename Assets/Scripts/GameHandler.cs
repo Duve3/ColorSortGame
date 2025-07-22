@@ -8,7 +8,7 @@ public class GameHandler : MonoBehaviour
 {
     public GameObject GameMaker;
     public GameObject CompletionObjects;
-    public GameObject GameButtons;
+    public Button[] GameButtons;
 
     public TMP_Text LevelText;
     public TMP_Text MoveCountText;
@@ -161,7 +161,7 @@ public class GameHandler : MonoBehaviour
                 MoveCountText.text = "Moves: " + MoveCount;
                 CompletionObjects.SetActive(true);
 
-                foreach (Button child in GameButtons.GetComponentsInChildren<Button>())
+                foreach (Button child in GameButtons)
                 {
                     child.interactable = false;
                 }
@@ -212,7 +212,7 @@ public class GameHandler : MonoBehaviour
     {
         ClearLevel();
 
-        foreach (Button child in GameButtons.GetComponentsInChildren<Button>())
+        foreach (Button child in GameButtons)
         {
             child.interactable = true;
         }
