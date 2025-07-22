@@ -8,8 +8,12 @@ public class GameHandler : MonoBehaviour
 {
     public GameObject GameMaker;
     public GameObject CompletionObjects;
+    public GameObject GameButtons;
 
     public TMP_Text LevelText;
+    public TMP_Text MoveCountText;
+
+    private int MoveCount;
 
     private int LevelCount = 1;
 
@@ -139,6 +143,7 @@ public class GameHandler : MonoBehaviour
 
         if (result)
         {
+            MoveCount++;
             // push this move (selectedBall, (from) selectedBall.previous, (to) tube)
             MoveList.Push(new List<GameObject>() { selectedBall, selectedBall.GetComponent<BallData>().previousTube, tube });
             selectedBall = null;
@@ -146,12 +151,20 @@ public class GameHandler : MonoBehaviour
 
             if (done)
             {
+                Debug.Log("Game completed, drawing objects and creating completions");
                 foreach (GameObject t in GameMakerHandler.Tubes) {
                     // ensures all tubes (including empties) are drawn to be solved
                     t.GetComponent<TubeHandler>().DrawCompletion();
                 }
 
+                Debug.Log("moves: " + MoveCount);
+                MoveCountText.text = "Moves: " + MoveCount;
                 CompletionObjects.SetActive(true);
+
+                foreach (Button child in GameButtons.GetComponentsInChildren<Button>())
+                {
+                    child.interactable = false;
+                }
             }
 
             return;
@@ -199,9 +212,15 @@ public class GameHandler : MonoBehaviour
     {
         ClearLevel();
 
+        foreach (Button child in GameButtons.GetComponentsInChildren<Button>())
+        {
+            child.interactable = true;
+        }
+
         IncrementLevel();
         GameMakerHandler.CreateGame(GetNumberOfTubes());
         GameMakerHandler.GenerateFill(Colors);
+        MoveCount = 0;
     }
 
     public void UndoMove()
@@ -274,5 +293,6 @@ public class GameHandler : MonoBehaviour
         GameMakerHandler.ResetTubes();
         GameMakerHandler.CreateGame(GetNumberOfTubes());
         GameMakerHandler.RecreateMostRecentFill();
+        MoveCount = 0;
     }
 }

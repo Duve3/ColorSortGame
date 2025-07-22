@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -80,7 +81,7 @@ public class MakerHandler : MonoBehaviour
         float padding = 20;
         float spacing = (Screen.width - padding) / divisor;
 
-        Debug.Log("creating ; " + spacing);
+        Debug.Log("creating ; " + spacing + " ; numTubes: " + numTubes);
         for (int i = 0; i < numTubes; i++)
         {
             GameObject obj = Instantiate(TubePrefab);
@@ -133,6 +134,7 @@ public class MakerHandler : MonoBehaviour
             Debug.Log("Truncating Colors!");
             Colors.RemoveRange(Tubes.Count - emptyTube, Colors.Count - (Tubes.Count - emptyTube));
             Debug.Log("New colors: " + Colors.Count);
+            Debug.Log("\t" + string.Join(", ", Colors));
         }
         int tubeLimit = Tubes[0].GetComponent<TubeHandler>().size;
 
@@ -168,6 +170,9 @@ public class MakerHandler : MonoBehaviour
                 t_h.AddBall(newBall, true);
             }
 
+            Debug.Log("Tube before completion check: " + 
+                string.Join(", ", t_h.balls.Select(obj => obj.GetComponent<SpriteRenderer>().color)));
+
             if (t_h.CheckCompletion())
             {
                 dictionary[t_h.balls.Peek().GetComponent<SpriteRenderer>().color] -= tubeLimit;
@@ -202,7 +207,10 @@ public class MakerHandler : MonoBehaviour
                 }
             }
 
-            
+            Debug.Log("Tube AFTER completion check: " +
+                string.Join(", ", t_h.balls.Select(obj => obj.GetComponent<SpriteRenderer>().color)));
+
+
             List<Color> tFill = new();
             foreach (GameObject ball in t_h.balls)
             {
