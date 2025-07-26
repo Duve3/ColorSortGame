@@ -6,7 +6,7 @@
   <current_asset_store_link>https://assetstore.unity.com/packages/tools/integration/share-for-ios-and-android309744#reviews</current_asset_store_link>
   <all_asset_store_link>https://assetstore.unity.com/publishers/95321</all_asset_store_link>
   <license>Free</license>
-  <is_introduction_enabled>true</is_introduction_enabled>
+  <is_introduction_enabled>false</is_introduction_enabled>
   <android_bundle_main_type>ShareNativeBridge</android_bundle_main_type>
   <ios_bundle_main_type>ShareNativeBridge</ios_bundle_main_type>
   <android_bundle_main_assembly>Sych.ShareAssets.Runtime.Android</android_bundle_main_assembly>

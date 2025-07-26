@@ -36,8 +36,6 @@ public class GameHandler : MonoBehaviour
 
     private Stack<List<GameObject>> MoveList = new() { };
 
-    private bool shakingBall = false;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -173,7 +171,7 @@ public class GameHandler : MonoBehaviour
         // TODO: minor bug, if you spam left click and it causes shakes
         //      the ball will begin to move farther and farther left due
         //      to the spammed coroutines (ball.transform.position keeps moving)
-        StartCoroutine(ShakeBall(selectedBall));
+        selectedBall.GetComponent<BallData>().ShakeBall();
         // ^ above bug is minor because it doesn't break any gameplay
     }
 
@@ -252,27 +250,6 @@ public class GameHandler : MonoBehaviour
         GameMakerHandler.ResetTubes();
         CompletionObjects.SetActive(false);
         MoveList.Clear();
-    }
-
-    IEnumerator ShakeBall(GameObject ball)
-    {
-        if (shakingBall) { yield break; }
-
-        shakingBall = true;
-
-        Vector3 ballLeft = ball.transform.position + new Vector3(0.1f, 0, 0);
-        Vector3 ballRight = ball.transform.position + new Vector3(-0.1f, 0, 0);
-        Vector3 ballOriginal = ball.transform.position;
-
-        iTween.MoveTo(ball, ballLeft, 0.1f);
-        yield return new WaitForSeconds(0.1f);
-
-        iTween.MoveTo(ball, ballRight, 0.1f);
-        yield return new WaitForSeconds(0.1f);
-
-        iTween.MoveTo(ball, ballOriginal, 0.1f);
-
-        shakingBall = false;
     }
 
     // ONLY FOR USAGE ON THE "RESTART?" BUTTON
