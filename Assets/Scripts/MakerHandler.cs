@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class MakerHandler : MonoBehaviour
 {
     [SerializeField]
-    private int RowLimit = 5;
+    public int RowLimit = 5;
 
     [SerializeField]
     private Image CheckmarkImage;
@@ -21,11 +21,13 @@ public class MakerHandler : MonoBehaviour
 
     public GameObject TopRowPositioner;
     public GameObject BottomRowPositioner;
+    public GameObject ExtraTubePositioner;
 
     public List<List<Color>> MostRecentFill = new();
 
     private float bottomRowY;
     private float topRowY;
+    private float padding = 20;
 
     // Start func is here for debugging
     void Start()
@@ -78,10 +80,20 @@ public class MakerHandler : MonoBehaviour
             divisor = RowLimit;
         }
 
-        float padding = 20;
-        float spacing = (Screen.width - padding) / divisor;
+        float spacingBottom = (Screen.width - padding) / divisor;
 
-        Debug.Log("creating ; " + spacing + " ; numTubes: " + numTubes);
+        float spacingTop;
+        if (numTubes % RowLimit != 0)
+        {
+            spacingTop = (Screen.width - padding) / ((numTubes % RowLimit) + 1);
+        } else
+        {
+            spacingTop = (Screen.width - padding) / (RowLimit + 1);
+        }
+
+        bool top = false;
+
+        Debug.Log("creating ; " + spacingBottom + " ; " + spacingTop + " ; numTubes: " + numTubes);
         for (int i = 0; i < numTubes; i++)
         {
             GameObject obj = Instantiate(TubePrefab);
@@ -97,13 +109,22 @@ public class MakerHandler : MonoBehaviour
 
             if (Mathf.Floor(i / RowLimit) > 0)
             {
+                top = true;
                 truei = i % RowLimit;
                 y = topRowY;
             }
 
             y += (obj.transform.localScale.y);
 
-            float x = (padding / 2) + (spacing / 2) + (spacing * truei);
+            float x;
+            if (!top)
+            {
+                x = (padding / 2) + (spacingBottom / 2) + (spacingBottom * truei);
+            } else
+            {
+                x = (padding / 2) + (spacingTop / 2) + (spacingTop * truei);
+            }
+
             Debug.Log("x: " + x + " ; truei: " + truei + " ; y: " + y);
             obj.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(x, 0, 0));
 
@@ -258,5 +279,24 @@ public class MakerHandler : MonoBehaviour
                 t_h.AddBall(ball, true);
             }
         }
+    }
+
+    public void ONLYGH_AddTube_AD()
+    {
+        GameObject obj = Instantiate(TubePrefab);
+
+        // allows us to pass in this "checkmark" image & canvas
+        obj.GetComponent<TubeHandler>().CheckmarkImage = CheckmarkImage;
+        obj.GetComponent<TubeHandler>().Canvas = Canvas;
+
+        obj.GetComponent<SpriteRenderer>().color = new Color(0f / 255f, 160f / 255f, 0f / 255f);
+
+        Tubes.Add(obj);
+
+        float y = ExtraTubePositioner.transform.position.y + obj.transform.localScale.y;
+        float x = ExtraTubePositioner.transform.position.x;
+
+        // fix z value (ensures that its 0) and put in y value, (y is now WORLD Pos not screen pos)
+        obj.transform.position = new Vector3(x, y, 0);
     }
 }

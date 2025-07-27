@@ -9,9 +9,12 @@ public class GameHandler : MonoBehaviour
     public GameObject GameMaker;
     public GameObject CompletionObjects;
     public Button[] GameButtons;
+    public Button AddTubeButton;
 
     public TMP_Text LevelText;
     public TMP_Text MoveCountText;
+
+    public bool extraTube;
 
     private int MoveCount;
 
@@ -32,6 +35,8 @@ public class GameHandler : MonoBehaviour
         new Color(20f  / 255f, 195f / 255f, 180f / 255f), // aqua
         new Color(100f / 255f, 50f  / 255f, 15f  / 255f), // brown
         new Color(255f / 255f, 255f / 255f, 255f / 255f), // white
+        new Color(80f  / 255f, 0f   / 255f, 50f  / 255f), // dark pink?
+        new Color(50f  / 255f, 0f   / 255f, 80f  / 255f), // dark purple/blue?
     };
 
     private Stack<List<GameObject>> MoveList = new() { };
@@ -93,10 +98,25 @@ public class GameHandler : MonoBehaviour
 
     public int GetNumberOfTubes()
     {
-        int val = (int)Mathf.Floor(LevelCount / 3) + 5;
+        int val;
 
-        // we cant display more than 12!
-        if (val > 12) { return 12; }
+        // this weird ahh code basically just makes it scale slower past 7 tubes (1 row)
+        if (LevelCount < 9) {
+            val = (int)Mathf.Floor(LevelCount / 3) + 5;
+        } else if (LevelCount < 20)
+        {
+            val = (int)Mathf.Floor(LevelCount / 5) + 6;
+        } else if (LevelCount < 40)
+        {
+            val = (int)Mathf.Floor(LevelCount / 10) + 8;
+        } else
+        {
+            val = (int)Mathf.Floor(LevelCount / 20) + 10;
+        }
+        
+
+        // we cant display more than the row limit * 2 (two rows!)!
+        if (val > GameMakerHandler.RowLimit * 2) { return GameMakerHandler.RowLimit * 2; }
         return val;
     }
 
@@ -197,6 +217,13 @@ public class GameHandler : MonoBehaviour
                 continue;
             }
         }
+        if (extraTube)
+        {
+            if (solved + empty == GetNumberOfTubes() + 1)
+            {
+                return true;
+            }
+        }
 
         if (solved + empty == GetNumberOfTubes())
         {
@@ -208,6 +235,13 @@ public class GameHandler : MonoBehaviour
 
     public void NextLevel()
     {
+        // destroys the selected ball 
+        if (selectedBall)
+        {
+            DestroyImmediate(selectedBall.gameObject);
+            selectedBall = null;
+        }
+
         ClearLevel();
 
         foreach (Button child in GameButtons)
@@ -219,6 +253,8 @@ public class GameHandler : MonoBehaviour
         GameMakerHandler.CreateGame(GetNumberOfTubes());
         GameMakerHandler.GenerateFill(Colors);
         MoveCount = 0;
+        extraTube = false;
+        AddTubeButton.gameObject.SetActive(true);
     }
 
     public void UndoMove()
@@ -271,5 +307,12 @@ public class GameHandler : MonoBehaviour
         GameMakerHandler.CreateGame(GetNumberOfTubes());
         GameMakerHandler.RecreateMostRecentFill();
         MoveCount = 0;
+    }
+
+    public void AddTube_AD()
+    {
+        GameMakerHandler.ONLYGH_AddTube_AD();
+        extraTube = true;
+        AddTubeButton.gameObject.SetActive(false);
     }
 }
