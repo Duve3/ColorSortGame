@@ -15,7 +15,15 @@ public class ExportLogsButton : MonoBehaviour
     void Start()
     {
         Debug.Log("ErrorText: " + ErrorText);
-        logManager = GameObject.Find("LogManager").GetComponent<LogManager>();
+        try
+        {
+            logManager = GameObject.Find("LogManagerObject").GetComponent<LogManager>();
+        } catch
+        {
+            Debug.Log("Could not find log manager, (GameObject.Find(`LogManagerObject`))");
+            ErrorText.text = "Failed to find log manager!";
+            StartCoroutine(OperationFailed(0.2f, 0.05f));
+        }
     }
 
     public void ExportLogs()
