@@ -11,6 +11,7 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
     void Awake()
     {
         InitializeAds();
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public void InitializeAds()

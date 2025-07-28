@@ -293,10 +293,14 @@ public class MakerHandler : MonoBehaviour
 
         Tubes.Add(obj);
 
+        float spacingTop = (Screen.width - padding) / (RowLimit + 1);
+
         float y = ExtraTubePositioner.transform.position.y + obj.transform.localScale.y;
-        float x = ExtraTubePositioner.transform.position.x;
+        float x = (padding / 2) + (spacingTop / 2) + (spacingTop * RowLimit);
+
+        float xWorldCoords = Camera.main.ScreenToWorldPoint(new Vector3(x, 0, 0)).x;
 
         // fix z value (ensures that its 0) and put in y value, (y is now WORLD Pos not screen pos)
-        obj.transform.position = new Vector3(x, y, 0);
+        obj.transform.position = new Vector3(xWorldCoords, y, 0);
     }
 }
