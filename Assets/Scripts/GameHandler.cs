@@ -11,6 +11,8 @@ public class GameHandler : MonoBehaviour
     public Button[] GameButtons;
     public Button AddTubeButton;
 
+    public RewardedAdsButton Ads;
+
     public TMP_Text LevelText;
     public TMP_Text MoveCountText;
 
@@ -254,6 +256,8 @@ public class GameHandler : MonoBehaviour
         GameMakerHandler.GenerateFill(Colors);
         MoveCount = 0;
         extraTube = false;
+
+        // ensures an ad is ready
         AddTubeButton.gameObject.SetActive(true);
     }
 

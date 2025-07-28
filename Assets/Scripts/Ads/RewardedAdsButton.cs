@@ -6,7 +6,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
 {
     [SerializeField] private Button _showAdButton;
     [SerializeField] private string _androidAdUnitId = "Rewarded_Android";
-    [SerializeField] private string _iOSAdUnitId = "Rewarded_iOS_v2";
+    [SerializeField] private string _iOSAdUnitId = "Rewarded_iOS";
     [SerializeField] private GameHandler GameHandle;
     string _adUnitId = null;
 
@@ -19,6 +19,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         #endif
 
         _showAdButton.interactable = false;
+        LoadAd();
     }
 
     // Call this public method when you want to get an ad ready to show.
@@ -61,6 +62,8 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
             // Grant a reward.
 
             GameHandle.AddTube_AD();
+            // ensures we ALWAYS have an ad ready! 
+            LoadAd();
         }
     }
 
