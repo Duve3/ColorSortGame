@@ -191,8 +191,8 @@ public class MakerHandler : MonoBehaviour
                 t_h.AddBall(newBall, true);
             }
 
-            Debug.Log("Tube before completion check: " + 
-                string.Join(", ", t_h.balls.Select(obj => obj.GetComponent<SpriteRenderer>().color)));
+            //Debug.Log("Tube before completion check: " + 
+            //    string.Join(", ", t_h.balls.Select(obj => obj.GetComponent<SpriteRenderer>().color)));
 
             if (t_h.CheckCompletion())
             {
@@ -228,8 +228,8 @@ public class MakerHandler : MonoBehaviour
                 }
             }
 
-            Debug.Log("Tube AFTER completion check: " +
-                string.Join(", ", t_h.balls.Select(obj => obj.GetComponent<SpriteRenderer>().color)));
+            //Debug.Log("Tube AFTER completion check: " +
+            //    string.Join(", ", t_h.balls.Select(obj => obj.GetComponent<SpriteRenderer>().color)));
 
 
             List<Color> tFill = new();

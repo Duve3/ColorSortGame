@@ -931,6 +931,8 @@ MonoBehaviour:
   _androidAdUnitId: Rewarded_Android
   _iOSAdUnitId: Rewarded_iOS
   GameHandle: {fileID: 1358820907}
+  YesImage: {fileID: 3567724536241146281, guid: c120c998d913fcc4baac6509d8da8efe, type: 3}
+  LoadingImage: {fileID: -8525358432323994778, guid: 42d8b569d6fc2544caa166dc166e25a9, type: 3}
 --- !u!114 &384462052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2858,7 +2860,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Are you sure you want to skip this level?
+  m_text: Do you want to skip this level by watching an <color #00FF00>Ad</color>?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 500c43c513c17f8439025ce42a994cf4, type: 2}
   m_sharedMaterial: {fileID: -8422345881738257998, guid: 500c43c513c17f8439025ce42a994cf4, type: 2}
@@ -2949,6 +2951,7 @@ GameObject:
   - component: {fileID: 1761973778}
   - component: {fileID: 1761973777}
   - component: {fileID: 1761973776}
+  - component: {fileID: 1761973779}
   m_Layer: 5
   m_Name: ButtonYes
   m_TagString: Untagged
@@ -3019,18 +3022,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1358820907}
-        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
-        m_MethodName: NextLevel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 254196581}
         m_TargetAssemblyTypeName: SkipHandler, Assembly-CSharp
         m_MethodName: CloseDialog
@@ -3081,6 +3072,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761973774}
   m_CullTransparentMesh: 1
+--- !u!114 &1761973779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761973774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a85539c0c570b542b9e244df560fc37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showAdButton: {fileID: 1761973776}
+  _androidAdUnitId: Rewarded_Android_v2
+  _iOSAdUnitId: Rewarded_iOS_v2
+  GameHandle: {fileID: 1358820907}
+  YesImage: {fileID: 3567724536241146281, guid: c120c998d913fcc4baac6509d8da8efe, type: 3}
+  LoadingImage: {fileID: -8525358432323994778, guid: 42d8b569d6fc2544caa166dc166e25a9, type: 3}
 --- !u!1 &1849619709
 GameObject:
   m_ObjectHideFlags: 0

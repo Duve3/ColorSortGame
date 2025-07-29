@@ -2,35 +2,37 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
 
-public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
+public class RewardedSkipButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
     [SerializeField] private Button _showAdButton;
-    [SerializeField] private string _androidAdUnitId = "Rewarded_Android";
-    [SerializeField] private string _iOSAdUnitId = "Rewarded_iOS";
+    [SerializeField] private string _androidAdUnitId = "Rewarded_Android_v2";
+    [SerializeField] private string _iOSAdUnitId = "Rewarded_iOS_v2";
     [SerializeField] private GameHandler GameHandle;
     [SerializeField] private Sprite YesImage;
     [SerializeField] private Sprite LoadingImage;
     string _adUnitId = null;
 
+    string _previousText = "";
+
     void Awake()
     {
         #if UNITY_IOS
                 _adUnitId = _iOSAdUnitId;
-#elif UNITY_ANDROID
+        #elif UNITY_ANDROID
             _adUnitId = _androidAdUnitId;
-#endif
+        #endif
 
         ChangeButtonState(false);
         LoadAd();
     }
+
     private void ChangeButtonState(bool active)
     {
         if (active)
         {
             _showAdButton.interactable = true;
             _showAdButton.gameObject.GetComponent<Image>().sprite = YesImage;
-        }
-        else
+        } else
         {
             _showAdButton.interactable = false;
             _showAdButton.gameObject.GetComponent<Image>().sprite = LoadingImage;
@@ -74,12 +76,18 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         if (adUnitId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
             Debug.Log("Unity Ads Rewarded Ad Completed");
-            Debug.Log("ADDTUBE COMPLETE");
+            Debug.Log("NEXTLEVEL COMPLETE");
             // Grant a reward.
 
-            GameHandle.AddTube_AD();
+            GameHandle.NextLevel();
+
+            // cleanup
+            _showAdButton.onClick.RemoveListener(ShowAd);
+
             // ensures we ALWAYS have an ad ready! 
             LoadAd();
+
+            
         }
     }
 
