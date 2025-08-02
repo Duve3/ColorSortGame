@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class TubeHandler : MonoBehaviour
 {
     public Stack<GameObject> balls = new Stack<GameObject>();
-    public int size = 2;
-    public bool solved = false;
+    public int size = 5;
+    public bool solved;
 
     public Image CheckmarkImage;
     public Canvas Canvas;
@@ -71,7 +71,7 @@ public class TubeHandler : MonoBehaviour
         float y = sum + (transform.position.y - (height / 2)) - (ball.transform.localScale.y / 2) + 0.1f;
         Vector3 newPos = new Vector3(transform.position.x, y, 0);
 
-        iTween.MoveTo(ball, newPos, 0.5f);
+        ball.GetComponent<AnimationHandler>().AddAnimationToQueue(newPos, 0.25f, true);
 
         bool completion = CheckCompletion();
 
@@ -112,11 +112,11 @@ public class TubeHandler : MonoBehaviour
 
         Vector3 ScreenCords = Camera.main.WorldToScreenPoint(new(transform.position.x, transform.position.y + (tube_height / 2f), transform.position.z));
 
-        GameObject dup = Instantiate(CheckmarkImage.gameObject);
+        GameObject dup = Instantiate(CheckmarkImage.gameObject, Canvas.gameObject.transform);
 
         dup.transform.position = ScreenCords;
-
-        dup.transform.SetParent(Canvas.gameObject.transform);
+        
+        dup.transform.SetAsFirstSibling();
 
         dup.SetActive(true);
 

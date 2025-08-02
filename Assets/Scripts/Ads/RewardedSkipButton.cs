@@ -12,8 +12,6 @@ public class RewardedSkipButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAd
     [SerializeField] private Sprite LoadingImage;
     string _adUnitId = null;
 
-    string _previousText = "";
-
     void Awake()
     {
         #if UNITY_IOS

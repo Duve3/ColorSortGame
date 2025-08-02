@@ -1,37 +1,39 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BallData : MonoBehaviour
 {
     public GameObject previousTube;
 
-    private bool shaking = false;
+    private bool _shaking;
+    
+    public AnimationHandler animationHandler;
+
+    private void Start()
+    {
+        animationHandler =  GetComponent<AnimationHandler>();
+    }
 
     public void ShakeBall()
     {
-        StartCoroutine(bShakeBall());
+        StartCoroutine(_ShakeBall());
     }
 
-    private IEnumerator bShakeBall()
+    private IEnumerator _ShakeBall()
     {
-        if (shaking) { yield break; }
+        if (_shaking) { yield break; }
 
-        shaking = true;
+        _shaking = true;
 
-        Vector3 ballLeft = transform.position + new Vector3(0.1f, 0, 0);
-        Vector3 ballRight = transform.position + new Vector3(-0.1f, 0, 0);
+        Vector3 ballLeft = transform.position + new Vector3(-0.15f, 0, 0);
+        Vector3 ballRight = transform.position + new Vector3(0.15f, 0, 0);
         Vector3 ballOriginal = transform.position;
 
-        iTween.MoveTo(gameObject, ballLeft, 0.1f);
-        yield return new WaitForSeconds(0.1f);
+        animationHandler.AddAnimationToQueue(ballLeft, 0.05f);
+        animationHandler.AddAnimationToQueue(ballRight, 0.05f);
+        animationHandler.AddAnimationToQueue(ballOriginal, 0.025f);
 
-        iTween.MoveTo(gameObject, ballRight, 0.1f);
-        yield return new WaitForSeconds(0.1f);
-
-        iTween.MoveTo(gameObject, ballOriginal, 0.1f);
-        yield return new WaitForSeconds(0.1f);
-
-        shaking = false;
+        yield return new WaitForSeconds(0.125f);
+        _shaking = false;
     }
 }

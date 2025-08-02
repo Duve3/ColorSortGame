@@ -105,3 +105,6 @@ AndroidExports*/
 RealAndroidExports*/
 
 .vsconfig
+
+# i love intellij but i HATE the config files
+.idea/

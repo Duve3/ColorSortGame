@@ -142,24 +142,26 @@ public class GameHandler : MonoBehaviour
 
         Debug.Log("Top: " + top + " ; y: " + tube.transform.position.y + " ; height: " + tube_height);
 
-        // WARN?: remove itween usage maybe? i dont really like how its done, but we will use it for now
-        iTween.MoveTo(ball, new Vector3(ball.transform.position.x, top + 0.25f, 0), 0.75f);
+        // hopefully this works
+        BallData bd = ball.GetComponent<BallData>();
+        bd.animationHandler.AddAnimationToQueue(new Vector3(ball.transform.position.x, top + 0.25f, 0), 0.25f, true);
 
         selectedBall = ball;
-        ball.GetComponent<BallData>().previousTube = tube;
+        bd.previousTube = tube;
     }
 
     void PutBall(GameObject tube)
     {
+        TubeHandler t_h = tube.GetComponent<TubeHandler>();
         if (tube == selectedBall.GetComponent<BallData>().previousTube)
         {
             // basically just force the ball on since it was our previous tube
-            tube.GetComponent<TubeHandler>().AddBall(selectedBall, true);
+            t_h.AddBall(selectedBall, true);
             selectedBall = null;
             return;
         }
 
-        bool result = tube.GetComponent<TubeHandler>().AddBall(selectedBall);
+        bool result = t_h.AddBall(selectedBall);
 
         if (result)
         {
@@ -189,12 +191,9 @@ public class GameHandler : MonoBehaviour
 
             return;
         }
-
-        // TODO: minor bug, if you spam left click and it causes shakes
-        //      the ball will begin to move farther and farther left due
-        //      to the spammed coroutines (ball.transform.position keeps moving)
+        
         selectedBall.GetComponent<BallData>().ShakeBall();
-        // ^ above bug is minor because it doesn't break any gameplay
+        // ^ above bug HOPEFULLY is fixed!!
     }
 
     private bool IsGameOver()
@@ -311,6 +310,12 @@ public class GameHandler : MonoBehaviour
         GameMakerHandler.CreateGame(GetNumberOfTubes());
         GameMakerHandler.RecreateMostRecentFill();
         MoveCount = 0;
+        
+        // fixes #22, ensures extra tube is given if ad completed
+        if (extraTube)
+        {
+            AddTube_AD();
+        }
     }
 
     public void AddTube_AD()
