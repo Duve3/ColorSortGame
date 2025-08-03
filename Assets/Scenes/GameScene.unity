@@ -674,6 +674,7 @@ GameObject:
   - component: {fileID: 254196580}
   - component: {fileID: 254196579}
   - component: {fileID: 254196578}
+  - component: {fileID: 254196581}
   m_Layer: 5
   m_Name: SkipButton
   m_TagString: Untagged
@@ -794,6 +795,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254196576}
   m_CullTransparentMesh: 1
+--- !u!114 &254196581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254196576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a85539c0c570b542b9e244df560fc37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showAdButton: {fileID: 1761973776}
+  _androidAdUnitId: Rewarded_Android_v2
+  _iOSAdUnitId: Rewarded_iOS_v2
+  gameHandle: {fileID: 1358820907}
+  yesImage: {fileID: 3567724536241146281, guid: c120c998d913fcc4baac6509d8da8efe, type: 3}
+  loadingImage: {fileID: -8525358432323994778, guid: 42d8b569d6fc2544caa166dc166e25a9, type: 3}
 --- !u!1 &268621600
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,7 +912,6 @@ GameObject:
   - component: {fileID: 384462054}
   - component: {fileID: 384462053}
   - component: {fileID: 384462052}
-  - component: {fileID: 384462051}
   m_Layer: 5
   m_Name: ButtonYes
   m_TagString: Untagged
@@ -901,24 +919,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &384462051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 384462050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1243ed7d722cc68469d265ce7b88d2de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _showAdButton: {fileID: 384462052}
-  _androidAdUnitId: Rewarded_Android
-  _iOSAdUnitId: Rewarded_iOS
-  gameHandle: {fileID: 1358820907}
-  yesImage: {fileID: 3567724536241146281, guid: c120c998d913fcc4baac6509d8da8efe, type: 3}
-  loadingImage: {fileID: -8525358432323994778, guid: 42d8b569d6fc2544caa166dc166e25a9, type: 3}
 --- !u!114 &384462052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2253,6 +2253,7 @@ GameObject:
   - component: {fileID: 1361182040}
   - component: {fileID: 1361182039}
   - component: {fileID: 1361182038}
+  - component: {fileID: 1361182041}
   m_Layer: 5
   m_Name: AddTubeButton
   m_TagString: Untagged
@@ -2373,6 +2374,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1361182035}
   m_CullTransparentMesh: 1
+--- !u!114 &1361182041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361182035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1243ed7d722cc68469d265ce7b88d2de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showAdButton: {fileID: 384462052}
+  _androidAdUnitId: Rewarded_Android
+  _iOSAdUnitId: Rewarded_iOS
+  gameHandle: {fileID: 1358820907}
+  yesImage: {fileID: 3567724536241146281, guid: c120c998d913fcc4baac6509d8da8efe, type: 3}
+  loadingImage: {fileID: -8525358432323994778, guid: 42d8b569d6fc2544caa166dc166e25a9, type: 3}
 --- !u!1 &1437302383
 GameObject:
   m_ObjectHideFlags: 0
@@ -2908,7 +2927,6 @@ GameObject:
   - component: {fileID: 1761973778}
   - component: {fileID: 1761973777}
   - component: {fileID: 1761973776}
-  - component: {fileID: 1761973779}
   m_Layer: 5
   m_Name: ButtonYes
   m_TagString: Untagged
@@ -3029,24 +3047,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761973774}
   m_CullTransparentMesh: 1
---- !u!114 &1761973779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1761973774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a85539c0c570b542b9e244df560fc37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _showAdButton: {fileID: 1761973776}
-  _androidAdUnitId: Rewarded_Android_v2
-  _iOSAdUnitId: Rewarded_iOS_v2
-  gameHandle: {fileID: 1358820907}
-  yesImage: {fileID: 3567724536241146281, guid: c120c998d913fcc4baac6509d8da8efe, type: 3}
-  loadingImage: {fileID: -8525358432323994778, guid: 42d8b569d6fc2544caa166dc166e25a9, type: 3}
 --- !u!1 &1849619709
 GameObject:
   m_ObjectHideFlags: 0
