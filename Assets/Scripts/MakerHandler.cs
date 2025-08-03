@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class MakerHandler : MonoBehaviour
 {
     [SerializeField]
-    public int rowLimit = 5;
+    public int rowLimit = 7;
 
     [SerializeField]
     private Image checkmarkImage;

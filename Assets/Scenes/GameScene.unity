@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 858c3e1493d1cf34e94f0c1a02dcec77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rowLimit: 5
+  rowLimit: 7
   checkmarkImage: {fileID: 903609154}
   canvas: {fileID: 559019250}
   tubes: []
