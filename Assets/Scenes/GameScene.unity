@@ -349,13 +349,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 701738447}
-        m_TargetAssemblyTypeName: RestartHandler, Assembly-CSharp
+      - m_Target: {fileID: 1358820907}
+        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
         m_MethodName: CloseDialog
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1302738956}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -428,15 +428,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 858c3e1493d1cf34e94f0c1a02dcec77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RowLimit: 7
-  CheckmarkImage: {fileID: 903609154}
-  Canvas: {fileID: 559019250}
-  Tubes: []
-  TubePrefab: {fileID: 7173240463649833743, guid: 350c0832d9c53364a92bd92686163c69, type: 3}
-  BallPrefab: {fileID: 3034819184171429432, guid: a77cead575287dc4ba68674aec56615c, type: 3}
-  TopRowPositioner: {fileID: 268621600}
-  BottomRowPositioner: {fileID: 1437302383}
-  ExtraTubePositioner: {fileID: 1570302494}
+  rowLimit: 5
+  checkmarkImage: {fileID: 903609154}
+  canvas: {fileID: 559019250}
+  tubes: []
+  tubePrefab: {fileID: 7173240463649833743, guid: 350c0832d9c53364a92bd92686163c69, type: 3}
+  ballPrefab: {fileID: 3034819184171429432, guid: a77cead575287dc4ba68674aec56615c, type: 3}
+  topRowPositioner: {fileID: 268621600}
+  bottomRowPositioner: {fileID: 1437302383}
+  extraTubePositioner: {fileID: 1570302494}
 --- !u!4 &93365047
 Transform:
   m_ObjectHideFlags: 0
@@ -674,7 +674,6 @@ GameObject:
   - component: {fileID: 254196580}
   - component: {fileID: 254196579}
   - component: {fileID: 254196578}
-  - component: {fileID: 254196581}
   m_Layer: 5
   m_Name: SkipButton
   m_TagString: Untagged
@@ -745,13 +744,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 254196581}
-        m_TargetAssemblyTypeName: SkipHandler, Assembly-CSharp
+      - m_Target: {fileID: 1358820907}
+        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
         m_MethodName: OpenDialog
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 576811633}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -795,19 +794,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254196576}
   m_CullTransparentMesh: 1
---- !u!114 &254196581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 254196576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c35fb445917c9a44192574a96ce30ef8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SkipDialog: {fileID: 576811633}
 --- !u!1 &268621600
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,9 +916,9 @@ MonoBehaviour:
   _showAdButton: {fileID: 384462052}
   _androidAdUnitId: Rewarded_Android
   _iOSAdUnitId: Rewarded_iOS
-  GameHandle: {fileID: 1358820907}
-  YesImage: {fileID: 3567724536241146281, guid: c120c998d913fcc4baac6509d8da8efe, type: 3}
-  LoadingImage: {fileID: -8525358432323994778, guid: 42d8b569d6fc2544caa166dc166e25a9, type: 3}
+  gameHandle: {fileID: 1358820907}
+  yesImage: {fileID: 3567724536241146281, guid: c120c998d913fcc4baac6509d8da8efe, type: 3}
+  loadingImage: {fileID: -8525358432323994778, guid: 42d8b569d6fc2544caa166dc166e25a9, type: 3}
 --- !u!114 &384462052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -977,13 +963,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1361182041}
-        m_TargetAssemblyTypeName: AddTubeHandler, Assembly-CSharp
+      - m_Target: {fileID: 1358820907}
+        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
         m_MethodName: CloseDialog
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 213429307}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1248,7 +1234,6 @@ GameObject:
   - component: {fileID: 701738446}
   - component: {fileID: 701738445}
   - component: {fileID: 701738444}
-  - component: {fileID: 701738447}
   m_Layer: 5
   m_Name: RestartButton
   m_TagString: Untagged
@@ -1319,13 +1304,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 701738447}
-        m_TargetAssemblyTypeName: RestartHandler, Assembly-CSharp
+      - m_Target: {fileID: 1358820907}
+        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
         m_MethodName: OpenDialog
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1302738956}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1369,19 +1354,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 701738442}
   m_CullTransparentMesh: 1
---- !u!114 &701738447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701738442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ea2a173acd85704d94c76579637afb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RestartDialog: {fileID: 1302738956}
 --- !u!1 &903609152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1916,13 +1888,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 254196581}
-        m_TargetAssemblyTypeName: SkipHandler, Assembly-CSharp
+      - m_Target: {fileID: 1358820907}
+        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
         m_MethodName: CloseDialog
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 576811633}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2086,13 +2058,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1361182041}
-        m_TargetAssemblyTypeName: AddTubeHandler, Assembly-CSharp
+      - m_Target: {fileID: 1358820907}
+        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
         m_MethodName: CloseDialog
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 213429307}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2243,17 +2215,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c710b28ccaa4bc41a903525b3b5869d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameMaker: {fileID: 93365045}
-  CompletionObjects: {fileID: 1211097941}
-  GameButtons:
+  gameMaker: {fileID: 93365045}
+  completionObjects: {fileID: 1211097941}
+  gameButtons:
   - {fileID: 1849619711}
   - {fileID: 254196578}
   - {fileID: 701738444}
   - {fileID: 1361182038}
-  AddTubeButton: {fileID: 1361182038}
-  Ads: {fileID: 384462051}
-  LevelText: {fileID: 968455925}
-  MoveCountText: {fileID: 1068839038}
+  addTubeButton: {fileID: 1361182038}
+  levelText: {fileID: 968455925}
+  moveCountText: {fileID: 1068839038}
   extraTube: 0
 --- !u!4 &1358820908
 Transform:
@@ -2282,7 +2253,6 @@ GameObject:
   - component: {fileID: 1361182040}
   - component: {fileID: 1361182039}
   - component: {fileID: 1361182038}
-  - component: {fileID: 1361182041}
   m_Layer: 5
   m_Name: AddTubeButton
   m_TagString: Untagged
@@ -2353,13 +2323,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1361182041}
-        m_TargetAssemblyTypeName: AddTubeHandler, Assembly-CSharp
+      - m_Target: {fileID: 1358820907}
+        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
         m_MethodName: OpenDialog
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 213429307}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2403,19 +2373,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1361182035}
   m_CullTransparentMesh: 1
---- !u!114 &1361182041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361182035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22a039a7f0008ee4c8f89f430d9c4caf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AddTubeDialog: {fileID: 213429307}
 --- !u!1 &1437302383
 GameObject:
   m_ObjectHideFlags: 0
@@ -3022,13 +2979,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 254196581}
-        m_TargetAssemblyTypeName: SkipHandler, Assembly-CSharp
+      - m_Target: {fileID: 1358820907}
+        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
         m_MethodName: CloseDialog
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 576811633}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3087,9 +3044,9 @@ MonoBehaviour:
   _showAdButton: {fileID: 1761973776}
   _androidAdUnitId: Rewarded_Android_v2
   _iOSAdUnitId: Rewarded_iOS_v2
-  GameHandle: {fileID: 1358820907}
-  YesImage: {fileID: 3567724536241146281, guid: c120c998d913fcc4baac6509d8da8efe, type: 3}
-  LoadingImage: {fileID: -8525358432323994778, guid: 42d8b569d6fc2544caa166dc166e25a9, type: 3}
+  gameHandle: {fileID: 1358820907}
+  yesImage: {fileID: 3567724536241146281, guid: c120c998d913fcc4baac6509d8da8efe, type: 3}
+  loadingImage: {fileID: -8525358432323994778, guid: 42d8b569d6fc2544caa166dc166e25a9, type: 3}
 --- !u!1 &1849619709
 GameObject:
   m_ObjectHideFlags: 0
@@ -3304,13 +3261,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 701738447}
-        m_TargetAssemblyTypeName: RestartHandler, Assembly-CSharp
+      - m_Target: {fileID: 1358820907}
+        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
         m_MethodName: CloseDialog
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1302738956}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,50 +5,44 @@ using UnityEngine.UI;
 public class MakerHandler : MonoBehaviour
 {
     [SerializeField]
-    public int RowLimit = 5;
+    public int rowLimit = 5;
 
     [SerializeField]
-    private Image CheckmarkImage;
+    private Image checkmarkImage;
     [SerializeField]
-    private Canvas Canvas;
+    private Canvas canvas;
 
-    public List<GameObject> Tubes = new List<GameObject>();
+    public List<GameObject> tubes = new();
 
-    public GameObject TubePrefab;
-    public GameObject BallPrefab;
+    public GameObject tubePrefab;
+    public GameObject ballPrefab;
 
-    public GameObject TopRowPositioner;
-    public GameObject BottomRowPositioner;
-    public GameObject ExtraTubePositioner;
+    public GameObject topRowPositioner;
+    public GameObject bottomRowPositioner;
+    public GameObject extraTubePositioner;
 
-    public List<List<Color>> MostRecentFill = new();
-
-    private float bottomRowY;
-    private float topRowY;
-    private float padding = 20;
+    private List<List<Color>> _mostRecentFill = new();
+    private float _bottomRowY;
+    private float _topRowY;
+    private const float Padding = 20;
 
     // Start func is here for debugging
-    void Start()
+    private void Start()
     {
-        bottomRowY = BottomRowPositioner.transform.position.y;
-        topRowY = TopRowPositioner.transform.position.y;
+        _bottomRowY = bottomRowPositioner.transform.position.y;
+        _topRowY = topRowPositioner.transform.position.y;
     }
 
-    private void CopyTo(List<Color> List1, List<Color> List2)
+    private static void CopyTo(List<Color> list1, List<Color> list2)
     {
-        foreach (Color c in List1)
+        foreach (Color c in list1)
         {
-            List2.Add(c);
+            list2.Add(c);
         }
     }
 
-    public int GetNumberOfEmptyTubes(int TubeCount)
+    private static int GetNumberOfEmptyTubes()
     {
-        if (TubeCount <= 4)
-        {
-            return 1;
-        }
-
         return 2;
     }
 
@@ -58,9 +50,9 @@ public class MakerHandler : MonoBehaviour
     public void ResetTubes()
     {
         // destroy each tube
-        foreach (GameObject tube in Tubes)
+        foreach (GameObject tube in tubes)
         {
-            foreach (GameObject ball in tube.GetComponent<TubeHandler>().balls)
+            foreach (GameObject ball in tube.GetComponent<TubeHandler>().Balls)
             {
                 DestroyImmediate(ball);
             }
@@ -69,26 +61,26 @@ public class MakerHandler : MonoBehaviour
         }
 
         // reset our list!
-        Tubes = new List<GameObject>();
+        tubes = new List<GameObject>();
     }
 
     public void CreateGame(int numTubes) {
         int divisor = numTubes;
 
-        if (numTubes > RowLimit)
+        if (numTubes > rowLimit)
         {
-            divisor = RowLimit;
+            divisor = rowLimit;
         }
 
-        float spacingBottom = (Screen.width - padding) / divisor;
+        float spacingBottom = (Screen.width - Padding) / divisor;
 
         float spacingTop;
-        if (numTubes % RowLimit != 0)
+        if (numTubes % rowLimit != 0)
         {
-            spacingTop = (Screen.width - padding) / ((numTubes % RowLimit) + 1);
+            spacingTop = (Screen.width - Padding) / ((numTubes % rowLimit) + 1);
         } else
         {
-            spacingTop = (Screen.width - padding) / (RowLimit + 1);
+            spacingTop = (Screen.width - Padding) / (rowLimit + 1);
         }
 
         bool top = false;
@@ -96,22 +88,22 @@ public class MakerHandler : MonoBehaviour
         Debug.Log("creating ; " + spacingBottom + " ; " + spacingTop + " ; numTubes: " + numTubes);
         for (int i = 0; i < numTubes; i++)
         {
-            GameObject obj = Instantiate(TubePrefab);
+            GameObject obj = Instantiate(tubePrefab);
 
             // allows us to pass in this "checkmark" image & canvas
-            obj.GetComponent<TubeHandler>().CheckmarkImage = CheckmarkImage;
-            obj.GetComponent<TubeHandler>().Canvas = Canvas;
+            obj.GetComponent<TubeHandler>().checkmarkImage = checkmarkImage;
+            obj.GetComponent<TubeHandler>().canvas = canvas;
 
-            Tubes.Add(obj);
+            tubes.Add(obj);
 
             int truei = i;
-            float y = bottomRowY;
+            float y = _bottomRowY;
 
-            if (Mathf.Floor(i / RowLimit) > 0)
+            if (Mathf.Floor(i / rowLimit) > 0)
             {
                 top = true;
-                truei = i % RowLimit;
-                y = topRowY;
+                truei = i % rowLimit;
+                y = _topRowY;
             }
 
             y += (obj.transform.localScale.y);
@@ -119,10 +111,10 @@ public class MakerHandler : MonoBehaviour
             float x;
             if (!top)
             {
-                x = (padding / 2) + (spacingBottom / 2) + (spacingBottom * truei);
+                x = (Padding / 2) + (spacingBottom / 2) + (spacingBottom * truei);
             } else
             {
-                x = (padding / 2) + (spacingTop / 2) + (spacingTop * truei);
+                x = (Padding / 2) + (spacingTop / 2) + (spacingTop * truei);
             }
 
             Debug.Log("x: " + x + " ; truei: " + truei + " ; y: " + y);
@@ -133,53 +125,53 @@ public class MakerHandler : MonoBehaviour
         }
     }
 
-    public void GenerateFill(List<Color> OldColors)
+    public void GenerateFill(List<Color> oldColors)
     {
         /*
          * Generate the "fill" or how to setup the tubes depending on the 
          * amount of balls 
          */
         // has to be done because we do destructive stuff with Colors
-        List<Color> Colors = new() { };
-        CopyTo(OldColors, Colors);
+        List<Color> colors = new() { };
+        CopyTo(oldColors, colors);
 
-        MostRecentFill = new List<List<Color>>();
+        _mostRecentFill = new List<List<Color>>();
 
-        int numColors = Colors.Count;
+        int numColors = colors.Count;
 
-        int emptyTube = GetNumberOfEmptyTubes(Tubes.Count);
+        int emptyTube = GetNumberOfEmptyTubes();
 
-        if (numColors >= Tubes.Count - emptyTube)
+        if (numColors >= tubes.Count - emptyTube)
         {
             // removes all colors beyond the range of amount of tubes
             Debug.Log("Truncating Colors!");
-            Colors.RemoveRange(Tubes.Count - emptyTube, Colors.Count - (Tubes.Count - emptyTube));
-            Debug.Log("New colors: " + Colors.Count);
-            Debug.Log("\t" + string.Join(", ", Colors));
+            colors.RemoveRange(tubes.Count - emptyTube, colors.Count - (tubes.Count - emptyTube));
+            Debug.Log("New colors: " + colors.Count);
+            Debug.Log("\t" + string.Join(", ", colors));
         }
-        int tubeLimit = Tubes[0].GetComponent<TubeHandler>().size;
+        int tubeLimit = tubes[0].GetComponent<TubeHandler>().size;
 
         Dictionary<Color, int> dictionary = new();
-        foreach (Color c in Colors)
+        foreach (Color c in colors)
         {
             dictionary.Add(c, 0);
         }
 
 
-        for (int j = 0; j < Tubes.Count - emptyTube; j++)
+        for (int j = 0; j < tubes.Count - emptyTube; j++)
         {
-            GameObject tube = Tubes[j];
+            GameObject tube = tubes[j];
             TubeHandler t_h = tube.GetComponent<TubeHandler>();
             for (int i = 0; i < tubeLimit; i++)
             {
-                GameObject newBall = Instantiate(BallPrefab);
-                Color chosenColor = Colors[Random.Range(0, Colors.Count)];
+                GameObject newBall = Instantiate(ballPrefab);
+                Color chosenColor = colors[Random.Range(0, colors.Count)];
 
-                if (Colors.Count == Tubes.Count - emptyTube)
+                if (colors.Count == tubes.Count - emptyTube)
                 {
                     while (dictionary[chosenColor] >= tubeLimit)
                     {
-                        chosenColor = Colors[Random.Range(0, Colors.Count)];
+                        chosenColor = colors[Random.Range(0, colors.Count)];
                     }
                     dictionary[chosenColor] += 1;
                 } else
@@ -196,10 +188,10 @@ public class MakerHandler : MonoBehaviour
 
             if (t_h.CheckCompletion())
             {
-                dictionary[t_h.balls.Peek().GetComponent<SpriteRenderer>().color] -= tubeLimit;
+                dictionary[t_h.Balls.Peek().GetComponent<SpriteRenderer>().color] -= tubeLimit;
 
                 // clear out our list from balls
-                foreach (GameObject b in t_h.balls)
+                foreach (GameObject b in t_h.Balls)
                 {
                     t_h.PopBall();
                 }
@@ -207,14 +199,14 @@ public class MakerHandler : MonoBehaviour
                 // just rerun the above code now, hopefully it works correctly this time!!
                 for (int i = 0; i < tubeLimit; i++)
                 {
-                    GameObject newBall = Instantiate(BallPrefab);
-                    Color chosenColor = Colors[Random.Range(0, Colors.Count)];
+                    GameObject newBall = Instantiate(ballPrefab);
+                    Color chosenColor = colors[Random.Range(0, colors.Count)];
 
-                    if (Colors.Count == Tubes.Count - emptyTube)
+                    if (colors.Count == tubes.Count - emptyTube)
                     {
                         while (dictionary[chosenColor] >= tubeLimit)
                         {
-                            chosenColor = Colors[Random.Range(0, Colors.Count)];
+                            chosenColor = colors[Random.Range(0, colors.Count)];
                         }
                         dictionary[chosenColor] += 1;
                     }
@@ -233,17 +225,17 @@ public class MakerHandler : MonoBehaviour
 
 
             List<Color> tFill = new();
-            foreach (GameObject ball in t_h.balls)
+            foreach (GameObject ball in t_h.Balls)
             {
                 tFill.Add(ball.GetComponent<SpriteRenderer>().color);
             }
 
             tFill.Reverse();
-            MostRecentFill.Add(tFill);
+            _mostRecentFill.Add(tFill);
         }
 
         string mrf = "";
-        foreach (List<Color> lc in MostRecentFill)
+        foreach (List<Color> lc in _mostRecentFill)
         {
             mrf += "(" + string.Join(", ", lc) + "), ";
         }
@@ -252,27 +244,27 @@ public class MakerHandler : MonoBehaviour
 
     public void RecreateMostRecentFill()
     {
-        int emptyTubes = GetNumberOfEmptyTubes(Tubes.Count);
+        int emptyTubes = GetNumberOfEmptyTubes();
 
 
         string mrf = "";
-        foreach (List<Color> lc in MostRecentFill)
+        foreach (List<Color> lc in _mostRecentFill)
         {
             mrf += "(" + string.Join(", ", lc) + "), ";
         }
         Debug.Log("MOST RECENT FILL READ: " + mrf);
 
 
-        for (var j = 0; j < Tubes.Count - emptyTubes; j++)
+        for (var j = 0; j < tubes.Count - emptyTubes; j++)
         {
-            GameObject tube = Tubes[j];
+            GameObject tube = tubes[j];
             TubeHandler t_h = tube.GetComponent<TubeHandler>();
 
-            List<Color> tFill = MostRecentFill[j];
+            List<Color> tFill = _mostRecentFill[j];
 
             foreach (Color c in tFill)
             {
-                GameObject ball = Instantiate(BallPrefab);
+                GameObject ball = Instantiate(ballPrefab);
 
                 ball.GetComponent<SpriteRenderer>().color = c;
 
@@ -283,20 +275,20 @@ public class MakerHandler : MonoBehaviour
 
     public void ONLYGH_AddTube_AD()
     {
-        GameObject obj = Instantiate(TubePrefab);
+        GameObject obj = Instantiate(tubePrefab);
 
         // allows us to pass in this "checkmark" image & canvas
-        obj.GetComponent<TubeHandler>().CheckmarkImage = CheckmarkImage;
-        obj.GetComponent<TubeHandler>().Canvas = Canvas;
+        obj.GetComponent<TubeHandler>().checkmarkImage = checkmarkImage;
+        obj.GetComponent<TubeHandler>().canvas = canvas;
 
         obj.GetComponent<SpriteRenderer>().color = new Color(0f / 255f, 160f / 255f, 0f / 255f);
 
-        Tubes.Add(obj);
+        tubes.Add(obj);
 
-        float spacingTop = (Screen.width - padding) / (RowLimit + 1);
+        float spacingTop = (Screen.width - Padding) / (rowLimit + 1);
 
-        float y = ExtraTubePositioner.transform.position.y + obj.transform.localScale.y;
-        float x = (padding / 2) + (spacingTop / 2) + (spacingTop * RowLimit);
+        float y = extraTubePositioner.transform.position.y + obj.transform.localScale.y;
+        float x = (Padding / 2) + (spacingTop / 2) + (spacingTop * rowLimit);
 
         float xWorldCoords = Camera.main.ScreenToWorldPoint(new Vector3(x, 0, 0)).x;
 

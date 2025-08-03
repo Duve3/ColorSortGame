@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnsureLogManager : MonoBehaviour
 {
-    void Awake()
+    private void Awake()
     {
         // Check if LogManager already exists
         if (FindAnyObjectByType<LogManager>() == null)

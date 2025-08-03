@@ -38,7 +38,7 @@ public class AnimationHandler : MonoBehaviour
             // clear out our queue (excluding the just added item
             for (int i = 0; i < _animationQueue.Count - 1; i++)
             {
-                var obj = _animationQueue.Dequeue();
+                Tuple<Vector3, float> obj = _animationQueue.Dequeue();
 
                 transform.position = obj.Item1;
             }

@@ -1,22 +1,22 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TubeHandler : MonoBehaviour
 {
-    public Stack<GameObject> balls = new Stack<GameObject>();
+    public readonly Stack<GameObject> Balls = new();
     public int size = 5;
     public bool solved;
 
-    public Image CheckmarkImage;
-    public Canvas Canvas;
+    public Image checkmarkImage;
+    public Canvas canvas;
 
-    private new SpriteRenderer renderer;
+    private SpriteRenderer _renderer;
 
-    void Awake()
+    private void Awake()
     {
-        renderer = GetComponent<SpriteRenderer>();
+        _renderer = GetComponent<SpriteRenderer>();
     }
 
     public bool AddBall(GameObject ball, bool? force = null)
@@ -26,7 +26,7 @@ public class TubeHandler : MonoBehaviour
         if (force == true)
         {
             // basically you are forcing us to push ts on
-            balls.Push(ball);
+            Balls.Push(ball);
             MoveBall(ball);
             return true;
         }
@@ -35,21 +35,21 @@ public class TubeHandler : MonoBehaviour
         if (!ball.CompareTag("Ball")) { return false; }
 
         // we are full!!! (this should anyways be detected by being "disabled"
-        if (balls.Count == size) { return false; }
+        if (Balls.Count == size) { return false; }
         
-        if (balls.Count < 1)
+        if (Balls.Count < 1)
         {
-            balls.Push(ball);
+            Balls.Push(ball);
             MoveBall(ball);
             return true;
         }
 
         Color ballColor = ball.GetComponent<SpriteRenderer>().color;
-        Color topBallColor = balls.Peek().GetComponent<SpriteRenderer>().color;
+        Color topBallColor = Balls.Peek().GetComponent<SpriteRenderer>().color;
 
         if (topBallColor == ballColor)
         {
-            balls.Push(ball);
+            Balls.Push(ball);
             MoveBall(ball);
             return true;
         }
@@ -61,12 +61,12 @@ public class TubeHandler : MonoBehaviour
     {
         // move ball to the lowest open spot on the tube
         float sum = 0;
-        foreach (GameObject b in balls)
+        foreach (GameObject b in Balls)
         {
             sum += b.transform.lossyScale.y + 0.05f;
         }
 
-        float height = renderer.bounds.size.y;
+        float height = _renderer.bounds.size.y;
 
         float y = sum + (transform.position.y - (height / 2)) - (ball.transform.localScale.y / 2) + 0.1f;
         Vector3 newPos = new Vector3(transform.position.x, y, 0);
@@ -94,7 +94,7 @@ public class TubeHandler : MonoBehaviour
             cRender.color = new Color(cRender.color.r, cRender.color.g, cRender.color.b, 0.25f);
         }
 
-        foreach (GameObject b in balls)
+        foreach (GameObject b in Balls)
         {
             SpriteRenderer cRender = b.GetComponent<SpriteRenderer>();
             cRender.color = new Color(cRender.color.r, cRender.color.g, cRender.color.b, 0.25f);
@@ -102,25 +102,28 @@ public class TubeHandler : MonoBehaviour
 
 
         // creating the "checkmark" that goes on top of the completed tubes
-        float tube_height = 0;
+        float tubeHeight = 0;
 
         Transform[] cObjs = GetComponentsInChildren<Transform>();
         foreach (Transform child in cObjs)
         {
-            tube_height += child.localScale.y;
+            tubeHeight += child.localScale.y;
         }
 
-        Vector3 ScreenCords = Camera.main.WorldToScreenPoint(new(transform.position.x, transform.position.y + (tube_height / 2f), transform.position.z));
+        if (Camera.main is null)
+        {
+            throw new NullReferenceException("Camera.main is null");
+        }
+        Vector3 screenCords = Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + (tubeHeight / 2f), transform.position.z));
 
-        GameObject dup = Instantiate(CheckmarkImage.gameObject, Canvas.gameObject.transform);
+        GameObject dup = Instantiate(checkmarkImage.gameObject, canvas.gameObject.transform);
 
-        dup.transform.position = ScreenCords;
+        dup.transform.position = screenCords;
         
         dup.transform.SetAsFirstSibling();
 
         dup.SetActive(true);
-
-
+        
         dup.GetComponent<CheckmarkHandler>().BeginDestroy();
     }
 
@@ -138,7 +141,7 @@ public class TubeHandler : MonoBehaviour
             cRender.color = new Color(cRender.color.r, cRender.color.g, cRender.color.b, 1f);
         }
 
-        foreach (GameObject b in balls)
+        foreach (GameObject b in Balls)
         {
             SpriteRenderer cRender = b.GetComponent<SpriteRenderer>();
             cRender.color = new Color(cRender.color.r, cRender.color.g, cRender.color.b, 1f);
@@ -149,13 +152,13 @@ public class TubeHandler : MonoBehaviour
 
     public bool CheckCompletion()
     {
-        if (balls.Count < size)
+        if (Balls.Count < size)
         {
             return false;
         }
 
-        Color start = balls.Peek().GetComponent<SpriteRenderer>().color;
-        foreach (GameObject ball in balls)
+        Color start = Balls.Peek().GetComponent<SpriteRenderer>().color;
+        foreach (GameObject ball in Balls)
         {
             if (ball.GetComponent<SpriteRenderer>().color != start)
             {
@@ -168,13 +171,13 @@ public class TubeHandler : MonoBehaviour
 
     public GameObject PopBall()
     {
-        if (balls.Count < 1 || solved)
+        if (Balls.Count < 1 || solved)
         {
             GameObject obj = new GameObject();
             Destroy(obj, 0.5f);
             return obj;
         }
 
-        return balls.Pop();
+        return Balls.Pop();
     }
 }

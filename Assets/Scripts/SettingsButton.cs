@@ -3,17 +3,17 @@ using UnityEngine;
 public class SettingsButton : MonoBehaviour
 {
     [SerializeField]
-    private GameObject BlackFade;
+    private GameObject blackFade;
 
-    private SceneChanger Changer;
+    private SceneChanger _changer;
 
-    void Start()
+    private void Start()
     {
-        Changer = BlackFade.GetComponent<SceneChanger>();
+        _changer = blackFade.GetComponent<SceneChanger>();
     }
 
     public void OpenSettings()
     {
-        Changer.FadeToScene(2);
+        _changer.FadeToScene(2);
     }
 }

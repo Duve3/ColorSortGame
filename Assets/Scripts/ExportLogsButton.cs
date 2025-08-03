@@ -1,34 +1,32 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Sych.ShareAssets.Runtime;
 using TMPro;
-using UnityEngine.UI;
 
 public class ExportLogsButton : MonoBehaviour
 {
-    private LogManager logManager;
+    private LogManager _logManager;
 
     [SerializeField]
-    private TMP_Text ErrorText;
+    private TMP_Text errorText;
 
-    void Start()
+    private void Start()
     {
-        Debug.Log("ErrorText: " + ErrorText);
+        Debug.Log("ErrorText: " + errorText);
         try
         {
-            logManager = GameObject.Find("LogManagerObject").GetComponent<LogManager>();
+            _logManager = GameObject.Find("LogManagerObject").GetComponent<LogManager>();
         } catch
         {
             Debug.Log("Could not find log manager, (GameObject.Find(`LogManagerObject`))");
-            ErrorText.text = "Failed to find log manager!";
+            errorText.text = "Failed to find log manager!";
             StartCoroutine(OperationFailed(0.2f, 0.05f));
         }
     }
 
     public void ExportLogs()
     {
-        Debug.Log($"Exporting LogFile!");
+        Debug.Log("Exporting LogFile!");
         if (!Share.IsPlatformSupported)
         {
             Debug.Log("Platform is not supported! (!Share.IsPlatformSupported)");
@@ -36,27 +34,27 @@ public class ExportLogsButton : MonoBehaviour
             return;
         }
 
-        string LogPath = logManager.GetLogFilePath();
+        string logPath = _logManager.GetLogFilePath();
 
-        Share.Item(LogPath, success => {
-            Debug.Log($"Sharing LogFile was {(success ? "success" : "failed")}");
+        Share.Item(logPath, success => {
+            Debug.Log($"Sharing LogFile was a {(success ? "success" : "failure")}");
         });
     }
 
-    IEnumerator OperationFailed(float wait, float increment)
+    private IEnumerator OperationFailed(float wait, float increment)
     {
         // makes it visible
-        ErrorText.gameObject.SetActive(true);
+        errorText.gameObject.SetActive(true);
 
         // for simplicity
-        Color c = ErrorText.color;
+        Color c = errorText.color;
 
-        while (ErrorText.color.a > 0) {
-            ErrorText.color = new Color(c.r, c.g, c.b, ErrorText.color.a - increment);
+        while (errorText.color.a > 0) {
+            errorText.color = new Color(c.r, c.g, c.b, errorText.color.a - increment);
             yield return new WaitForSeconds(wait);
         }
 
-        ErrorText.gameObject.SetActive(false);
-        ErrorText.color = c;
+        errorText.gameObject.SetActive(false);
+        errorText.color = c;
     }
 }

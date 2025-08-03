@@ -5,17 +5,17 @@ using UnityEngine;
 public class PlayButton : MonoBehaviour
 {
     [SerializeField]
-    private GameObject BlackFade;
+    private GameObject blackFade;
 
-    private SceneChanger Changer;
+    private SceneChanger _changer;
 
-    void Start()
+    private void Start()
     {
-        Changer = BlackFade.GetComponent<SceneChanger>();    
+        _changer = blackFade.GetComponent<SceneChanger>();    
     }
 
     public void PlayGame()
     {
-        Changer.FadeToScene(1);
+        _changer.FadeToScene(1);
     }
 }

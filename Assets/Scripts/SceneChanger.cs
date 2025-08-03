@@ -7,7 +7,7 @@ public class SceneChanger : MonoBehaviour
 {
     public Animator animator;
 
-    private int loadLevel;
+    private int _loadLevel;
 
     void Awake()
     {
@@ -16,12 +16,12 @@ public class SceneChanger : MonoBehaviour
 
     public void FadeToScene(int index)
     {
-        loadLevel = index;
+        _loadLevel = index;
         animator.SetTrigger("FadeOut");
     }
 
     public void OnFadeComplete()
     {
-        SceneManager.LoadScene(loadLevel);
+        SceneManager.LoadScene(_loadLevel);
     }
 }

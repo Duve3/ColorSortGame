@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4be919c946a62ce48835fe2a2175ffbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BlackFade: {fileID: 1127503093}
+  blackFade: {fileID: 1127503093}
 --- !u!1 &1127503093
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,7 +979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cabac0447b8647268743261d72edbda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BlackFade: {fileID: 1127503093}
+  blackFade: {fileID: 1127503093}
 --- !u!1 &1322388959
 GameObject:
   m_ObjectHideFlags: 0

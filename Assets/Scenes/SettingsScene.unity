@@ -798,7 +798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d852441639914f5393ae73bd54a7b9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ErrorText: {fileID: 397459171}
+  errorText: {fileID: 397459171}
 --- !u!114 &589218479
 MonoBehaviour:
   m_ObjectHideFlags: 0
