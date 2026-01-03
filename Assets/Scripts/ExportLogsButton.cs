@@ -1,26 +1,19 @@
-using System.Collections;
 using UnityEngine;
 using Sych.ShareAssets.Runtime;
-using TMPro;
 
 public class ExportLogsButton : MonoBehaviour
 {
-    private LogManager _logManager;
+    private LogManager m_logManager;
 
     [SerializeField]
-    private TMP_Text errorText;
+    private PopupToast popupToast;
 
-    private void Start()
+    private void Awake()
     {
-        Debug.Log("ErrorText: " + errorText);
-        try
+        var logManagerObject = GameObject.Find("LogManagerObject");
+        if (logManagerObject != null)
         {
-            _logManager = GameObject.Find("LogManagerObject").GetComponent<LogManager>();
-        } catch
-        {
-            Debug.Log("Could not find log manager, (GameObject.Find(`LogManagerObject`))");
-            errorText.text = "Failed to find log manager!";
-            StartCoroutine(OperationFailed(0.2f, 0.05f));
+            m_logManager = logManagerObject.GetComponent<LogManager>();
         }
     }
 
@@ -30,31 +23,25 @@ public class ExportLogsButton : MonoBehaviour
         if (!Share.IsPlatformSupported)
         {
             Debug.Log("Platform is not supported! (!Share.IsPlatformSupported)");
-            StartCoroutine(OperationFailed(0.2f, 0.05f));
+            if (popupToast != null)
+                StartCoroutine(popupToast.ShowToast("Platform not supported! (Report this!)", 2f));
             return;
         }
 
-        string logPath = _logManager.GetLogFilePath();
+        if (m_logManager == null)
+        {
+            Debug.Log("LogManager is null!");
+            if (popupToast != null)
+                StartCoroutine(popupToast.ShowToast("Failed to find log manager! (Report this!)", 2f));
+            return;
+        }
+
+        string logPath = m_logManager.GetLogFilePath();
 
         Share.Item(logPath, success => {
             Debug.Log($"Sharing LogFile was a {(success ? "success" : "failure")}");
+            if (!success && popupToast != null)
+                StartCoroutine(popupToast.ShowToast("Failed to share log file! (Report this!)", 2f));
         });
-    }
-
-    private IEnumerator OperationFailed(float wait, float increment)
-    {
-        // makes it visible
-        errorText.gameObject.SetActive(true);
-
-        // for simplicity
-        Color c = errorText.color;
-
-        while (errorText.color.a > 0) {
-            errorText.color = new Color(c.r, c.g, c.b, errorText.color.a - increment);
-            yield return new WaitForSeconds(wait);
-        }
-
-        errorText.gameObject.SetActive(false);
-        errorText.color = c;
     }
 }

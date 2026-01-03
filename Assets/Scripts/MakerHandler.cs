@@ -186,9 +186,16 @@ public class MakerHandler : MonoBehaviour
             //Debug.Log("Tube before completion check: " + 
             //    string.Join(", ", t_h.balls.Select(obj => obj.GetComponent<SpriteRenderer>().color)));
 
-            if (t_h.CheckCompletion())
+            // while the tube is completed, keep on running this loop
+            while (t_h.CheckCompletion())
             {
-                dictionary[t_h.Balls.Peek().GetComponent<SpriteRenderer>().color] -= tubeLimit;
+                // this right here fixes the bug of certain colors not existing in a dictionary
+                // below just "strips" the alpha value from the color we find
+                // (fixes #14)
+                Color ballColor = t_h.Balls.Peek().GetComponent<SpriteRenderer>().color;
+                Color properColor = new Color(ballColor.r, ballColor.g, ballColor.b, 1f);
+                
+                dictionary[properColor] -= tubeLimit;
 
                 // clear out our list from balls
                 foreach (GameObject b in t_h.Balls)
@@ -294,5 +301,21 @@ public class MakerHandler : MonoBehaviour
 
         // fix z value (ensures that its 0) and put in y value, (y is now WORLD Pos not screen pos)
         obj.transform.position = new Vector3(xWorldCoords, y, 0);
+    }
+
+    public void GenerateFromFillData(List<List<Color>> fillData)
+    {
+        for (int i = 0; i < fillData.Count; i++)
+        {
+            GameObject tube = tubes[i];
+            TubeHandler t_h = tube.GetComponent<TubeHandler>();
+            for (int j = 0; j < fillData[i].Count; j++)
+            {
+                GameObject ball = Instantiate(ballPrefab);
+                
+                ball.GetComponent<SpriteRenderer>().color = fillData[i][j];
+                t_h.AddBall(ball, true);
+            }
+        }
     }
 }

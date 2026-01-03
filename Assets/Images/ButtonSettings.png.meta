@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4631fff243c384b108ff0a3d311e9a48
+guid: 5204aad835a412b48ae6280e670d7017
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5904627132653970092
-    second: SettingsIcon_0
+      213: 5594350178501013429
+    second: ButtonSettings_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -110,6 +110,19 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
     buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -126,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SettingsIcon_0
+      name: ButtonSettings_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 7
-        width: 386
-        height: 386
+        x: 0
+        y: 0
+        width: 232
+        height: 244
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ca229f4d71371f150800000000000000
-      internalID: 5904627132653970092
+      spriteID: 5bf22b2e8df13ad40800000000000000
+      internalID: 5594350178501013429
       vertices: []
       indices: 
       edges: []
@@ -161,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SettingsIcon_0: 5904627132653970092
+      ButtonSettings_0: 5594350178501013429
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

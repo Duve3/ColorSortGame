@@ -1,27 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
-    public Animator animator;
+    [SerializeField] private Animator animator;
 
-    private int _loadLevel;
+    private int m_loadLevel;
 
-    void Awake()
+    private void Awake()
     {
         transform.SetAsLastSibling();
     }
 
     public void FadeToScene(int index)
     {
-        _loadLevel = index;
+        m_loadLevel = index;
         animator.SetTrigger("FadeOut");
     }
 
     public void OnFadeComplete()
     {
-        SceneManager.LoadScene(_loadLevel);
+        SceneManager.LoadScene(m_loadLevel);
     }
 }

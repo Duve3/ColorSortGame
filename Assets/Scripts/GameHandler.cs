@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -22,6 +23,8 @@ public class GameHandler : MonoBehaviour
     private int _levelCount = 1;
 
     private MakerHandler _gameMakerHandler;
+
+    private DataSave _dataSave;
 
     private GameObject _selectedBall;
 
@@ -50,6 +53,8 @@ public class GameHandler : MonoBehaviour
     {
         _gameMakerHandler = gameMaker.GetComponent<MakerHandler>();
 
+        _dataSave = GetComponent<DataSave>();
+
         _levelCount = PlayerPrefs.GetInt("Level");
         // ^ returns 0 by default!!!
         if (_levelCount == 0)
@@ -59,10 +64,51 @@ public class GameHandler : MonoBehaviour
 
         Debug.Log("LevelCount: " + _levelCount + " ; LevelText: " + levelText);
         levelText.text = "Level: " + _levelCount.ToString();
+        
+        // BEFORE WE RUN NEXT LEVEL, LETS CHECK FOR MORE SAVE DATA!!
+        List<List<Color>> data = _dataSave.ReadGameData();
 
-        // this is intentionally done to allow the next function to run properly
-        _levelCount--;
-        NextLevel();
+        if (data == _dataSave.ListEmpty)
+        {
+            Debug.Log("NO SAVE DATA FOUND, GENERATING NEW LEVEL");
+            // we continue with our normal code
+            _levelCount--;
+            NextLevel();
+        }
+        else
+        {
+            Debug.Log("SAVE DATA FOUND, LOADING LEVEL");
+            LevelFromSaveData(data);
+        }
+
+    }
+    
+    // todo: so far we have implemented an auto save upon application pause!
+    //      now we gotta add: autosave upon closing scene (aka pressing the back button)
+    //                      and actually loading our cool save file upon game launch/refocus?
+
+    private void OnApplicationPause(bool status)
+    {
+        if (!status)
+        {
+            return;
+        }
+        // this means we are pausing the game, so we save our data
+        Debug.Log("Application paused, saving data...");
+
+        GameSaveData();
+    }
+
+    public void GameSaveData()
+    {
+        List<List<Color>> final = new();
+        foreach (GameObject tube in _gameMakerHandler.tubes)
+        {
+            final.Add(tube.GetComponent<TubeHandler>().Balls.ToArray()
+                .Select(obj => obj.GetComponent<SpriteRenderer>().color).ToList());
+        }
+
+        _dataSave.SaveGameData(final);
     }
 
     private void IncrementLevel()
@@ -283,6 +329,29 @@ public class GameHandler : MonoBehaviour
         IncrementLevel();
         _gameMakerHandler.CreateGame(GetNumberOfTubes());
         _gameMakerHandler.GenerateFill(_colors);
+        _moveCount = 0;
+        extraTube = false;
+
+        // ensures an ad is ready
+        addTubeButton.gameObject.SetActive(true);
+    }
+
+    private void LevelFromSaveData(List<List<Color>> saveData)
+    {
+        if (_selectedBall)
+        {
+            DestroyImmediate(_selectedBall.gameObject);
+            _selectedBall = null;
+        }
+
+        ClearLevel();
+
+        foreach (Button child in gameButtons)
+        {
+            child.interactable = true;
+        }
+        _gameMakerHandler.CreateGame(GetNumberOfTubes());
+        _gameMakerHandler.GenerateFromFillData(saveData);
         _moveCount = 0;
         extraTube = false;
 
