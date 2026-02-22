@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d05fce89e3eaf6f40ab28943f64d4316
+guid: 9c608c5338e846a40990df64938f6adf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1792984843398054085
-    second: ButtonNo_0
+      213: 4529302359148476317
+    second: ButtonRestartLevel_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -110,6 +110,19 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
     buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -126,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ButtonNo_0
+      name: ButtonRestartLevel_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 552
-        height: 292
+        width: 216
+        height: 216
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b3f7999d8c90e17e0800000000000000
-      internalID: -1792984843398054085
+      spriteID: d9732659f705bde30800000000000000
+      internalID: 4529302359148476317
       vertices: []
       indices: 
       edges: []
@@ -161,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ButtonNo_0: -1792984843398054085
+      ButtonRestartLevel_0: 4529302359148476317
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

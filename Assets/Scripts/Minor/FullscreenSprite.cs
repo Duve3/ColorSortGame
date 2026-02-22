@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Minor
 {
-
+    [ExecuteAlways]
     public class FullscreenSprite : MonoBehaviour
     {
         private void Awake()

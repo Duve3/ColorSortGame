@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: be2659bb30f82ac468f667f7f9841924
+guid: 471ca622365695b42bcb5b7fb24797e9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7510497192285408470
-    second: SkipButton_0
+      213: 3567724536241146281
+    second: ButtonYes_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -110,6 +110,19 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
     buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -126,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SkipButton_0
+      name: ButtonYes_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 570
-        height: 570
+        width: 520
+        height: 216
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6dc8db07765aa3860800000000000000
-      internalID: 7510497192285408470
+      spriteID: 9a94917209a138130800000000000000
+      internalID: 3567724536241146281
       vertices: []
       indices: 
       edges: []
@@ -161,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SkipButton_0: 7510497192285408470
+      ButtonYes_0: 3567724536241146281
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
@@ -11,8 +12,6 @@ namespace Ads
         [SerializeField] private string _androidAdUnitId = "Rewarded_Android";
         [SerializeField] private string _iOSAdUnitId = "Rewarded_iOS";
         [SerializeField] private GameHandler gameHandle;
-        [SerializeField] private Sprite yesImage;
-        [SerializeField] private Sprite loadingImage;
         private string _adUnitId;
 
         private void Awake()
@@ -32,12 +31,12 @@ namespace Ads
             if (active)
             {
                 _showAdButton.interactable = true;
-                _showAdButton.gameObject.GetComponent<Image>().sprite = yesImage;
+                _showAdButton.gameObject.GetComponentInChildren<TMP_Text>().text = "YES";
             }
             else
             {
                 _showAdButton.interactable = false;
-                _showAdButton.gameObject.GetComponent<Image>().sprite = loadingImage;
+                _showAdButton.gameObject.GetComponentInChildren<TMP_Text>().text = "Loading...";
             }
         }
 
