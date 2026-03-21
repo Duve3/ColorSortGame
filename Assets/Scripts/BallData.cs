@@ -4,6 +4,12 @@ using UnityEngine;
 public class BallData : MonoBehaviour
 {
     public GameObject previousTube;
+    public GameObject currentTube;
+
+    /**
+     * This value is used for checking what color a ball is upon initalization
+     */
+    public readonly Color color;
 
     private bool _shaking;
     
@@ -11,7 +17,7 @@ public class BallData : MonoBehaviour
 
     private void Start()
     {
-        animationHandler =  GetComponent<AnimationHandler>();
+        animationHandler = GetComponent<AnimationHandler>();
     }
 
     public void ShakeBall()

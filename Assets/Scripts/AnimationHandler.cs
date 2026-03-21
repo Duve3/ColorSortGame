@@ -4,25 +4,31 @@ using UnityEngine;
 
 public class AnimationHandler : MonoBehaviour
 {
-    private readonly Queue<Tuple<Vector3, float>> _animationQueue = new();
+    private RectTransform _rectTransform;
 
-    private Tuple<Vector3, float> _currentAnimation = new(Vector3.zero, -1f);
+    private readonly Queue<Tuple<Vector2, float>> _animationQueue = new();
+
+    private Tuple<Vector2, float> _currentAnimation = new(Vector2.zero, -1f);
     private float _totalTime;
-    private Vector3 _mps;
-
+    private Vector2 _mps;
     private bool _emptyQueue;
-    
+    private bool _isAnimating;
+
+    private void Awake()
+    {
+        _rectTransform = GetComponent<RectTransform>();
+    }
+
     private void Update()
     {
-        if (_currentAnimation.Item1 == Vector3.zero)
+        if (!_isAnimating)
         {
             if (_animationQueue.Count > 0)
             {
                 _currentAnimation = _animationQueue.Dequeue();
-                
-                // we are finding our the difference between our two points (aka the TOTAL movement we would have to do to reach there)
-                _mps = _currentAnimation.Item1 - transform.position;
+                _mps = _currentAnimation.Item1 - _rectTransform.anchoredPosition;
                 _mps /= _currentAnimation.Item2;
+                _isAnimating = true;
             }
             else
             {
@@ -32,45 +38,43 @@ public class AnimationHandler : MonoBehaviour
 
         if (_emptyQueue)
         {
-            // end current animation IMMEDIATELY
-            transform.position = _currentAnimation.Item1;
-            
-            // clear out our queue (excluding the just added item
+            // End current animation immediately
+            _rectTransform.anchoredPosition = _currentAnimation.Item1;
+
+            // Flush remaining queue except the last item
             for (int i = 0; i < _animationQueue.Count - 1; i++)
             {
-                Tuple<Vector3, float> obj = _animationQueue.Dequeue();
-
-                transform.position = obj.Item1;
+                Tuple<Vector2, float> obj = _animationQueue.Dequeue();
+                _rectTransform.anchoredPosition = obj.Item1;
             }
-            
-            // reset our data and return so that a new iter begins
+
             _totalTime = 0f;
-            _currentAnimation = new Tuple<Vector3, float>(Vector3.zero, -1f);
+            _currentAnimation = new Tuple<Vector2, float>(Vector2.zero, -1f);
+            _isAnimating = false;
             _emptyQueue = false;
             return;
         }
 
         float dt = Time.deltaTime;
-
         _totalTime += dt;
-        
-        transform.position += _mps * dt;
+
+        _rectTransform.anchoredPosition += _mps * dt;
 
         if (_totalTime < _currentAnimation.Item2) { return; }
-        
-        // animation must be finished if _totalTime is > or = to our total time (Item2)
-        transform.position = _currentAnimation.Item1;
+
+        // Animation finished
+        _rectTransform.anchoredPosition = _currentAnimation.Item1;
         _totalTime = 0f;
-        _currentAnimation = new Tuple<Vector3, float>(Vector3.zero, -1f);
+        _currentAnimation = new Tuple<Vector2, float>(Vector2.zero, -1f);
+        _isAnimating = false;
     }
 
-    public void AddAnimationToQueue(Vector3 endPos, float time, bool? force = null)
+    public void AddAnimationToQueue(Vector2 endPos, float time, bool? force = null)
     {
-        _animationQueue.Enqueue(new Tuple<Vector3, float>(endPos, time));
+        _animationQueue.Enqueue(new Tuple<Vector2, float>(endPos, time));
 
         if (force == true && _animationQueue.Count > 1)
         {
-            // otherwise we don't really need to empty the queue
             _emptyQueue = true;
         }
     }

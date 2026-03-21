@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class MakerHandler : MonoBehaviour
 {
     [SerializeField]
-    public int rowLimit = 7;
+    public int rowLimit = 5;
 
     [SerializeField]
     private Image checkmarkImage;
@@ -14,24 +14,19 @@ public class MakerHandler : MonoBehaviour
 
     public List<GameObject> tubes = new();
 
-    public GameObject tubePrefab;
-    public GameObject ballPrefab;
+    [SerializeField]
+    private GameObject tubeUI;
 
-    public GameObject topRowPositioner;
-    public GameObject bottomRowPositioner;
-    public GameObject extraTubePositioner;
+    [SerializeField]
+    private GameObject tubePrefab;
+    [SerializeField]
+    private GameObject ballPrefab;
 
-    private List<List<Color>> _mostRecentFill = new();
-    private float _bottomRowY;
-    private float _topRowY;
+    private List<List<Color>> m_mostRecentFill = new();
+
     private const float Padding = 20;
-
-    // Start func is here for debugging
-    private void Start()
-    {
-        _bottomRowY = bottomRowPositioner.transform.position.y;
-        _topRowY = topRowPositioner.transform.position.y;
-    }
+    private const float TopRowY = 50;
+    private const float BottomRowY = -100;
 
     private static void CopyTo(List<Color> list1, List<Color> list2)
     {
@@ -65,6 +60,7 @@ public class MakerHandler : MonoBehaviour
     }
 
     public void CreateGame(int numTubes) {
+        // basically just calculating how much space we need between each tube
         int divisor = numTubes;
 
         if (numTubes > rowLimit)
@@ -83,31 +79,35 @@ public class MakerHandler : MonoBehaviour
             spacingTop = (Screen.width - Padding) / (rowLimit + 1);
         }
 
-        bool top = false;
+        var top = false;
 
-        Debug.Log("creating ; " + spacingBottom + " ; " + spacingTop + " ; numTubes: " + numTubes);
-        for (int i = 0; i < numTubes; i++)
+        for (var i = 0; i < numTubes; i++)
         {
-            GameObject obj = Instantiate(tubePrefab);
+            var tube = Instantiate(tubePrefab, tubeUI.transform);
 
-            // allows us to pass in this "checkmark" image & canvas
-            obj.GetComponent<TubeHandler>().checkmarkImage = checkmarkImage;
-            obj.GetComponent<TubeHandler>().canvas = canvas;
+            var tubeHandler = tube.GetComponent<TubeHandler>();
 
-            tubes.Add(obj);
+            tubeHandler.canvas = canvas;
+            tubeHandler.checkmarkImage = checkmarkImage;
+
+            tubes.Add(tube);
+
+            // now we move it!
+            var rt = tube.GetComponent<RectTransform>();
 
             int truei = i;
-            float y = _bottomRowY;
+            float y = BottomRowY;
 
             if (Mathf.Floor(i / rowLimit) > 0)
             {
                 top = true;
                 truei = i % rowLimit;
-                y = _topRowY;
+                y = TopRowY;
             }
 
-            y += (obj.transform.localScale.y);
+            y += (rt.rect.height / 2);
 
+            // based on whether we are top or bottom we space our X differently
             float x;
             if (!top)
             {
@@ -117,11 +117,7 @@ public class MakerHandler : MonoBehaviour
                 x = (Padding / 2) + (spacingTop / 2) + (spacingTop * truei);
             }
 
-            Debug.Log("x: " + x + " ; truei: " + truei + " ; y: " + y);
-            obj.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(x, 0, 0));
-
-            // fix z value (ensures that its 0) and put in y value, (y is now WORLD Pos not screen pos)
-            obj.transform.position = new Vector3(obj.transform.position.x, y, 0);
+            rt.anchoredPosition = new Vector2(x, y);
         }
     }
 
@@ -135,7 +131,7 @@ public class MakerHandler : MonoBehaviour
         List<Color> colors = new() { };
         CopyTo(oldColors, colors);
 
-        _mostRecentFill = new List<List<Color>>();
+        m_mostRecentFill = new List<List<Color>>();
 
         int numColors = colors.Count;
 
@@ -238,11 +234,11 @@ public class MakerHandler : MonoBehaviour
             }
 
             tFill.Reverse();
-            _mostRecentFill.Add(tFill);
+            m_mostRecentFill.Add(tFill);
         }
 
         string mrf = "";
-        foreach (List<Color> lc in _mostRecentFill)
+        foreach (List<Color> lc in m_mostRecentFill)
         {
             mrf += "(" + string.Join(", ", lc) + "), ";
         }
@@ -255,7 +251,7 @@ public class MakerHandler : MonoBehaviour
 
 
         string mrf = "";
-        foreach (List<Color> lc in _mostRecentFill)
+        foreach (List<Color> lc in m_mostRecentFill)
         {
             mrf += "(" + string.Join(", ", lc) + "), ";
         }
@@ -267,7 +263,7 @@ public class MakerHandler : MonoBehaviour
             GameObject tube = tubes[j];
             TubeHandler t_h = tube.GetComponent<TubeHandler>();
 
-            List<Color> tFill = _mostRecentFill[j];
+            List<Color> tFill = m_mostRecentFill[j];
 
             foreach (Color c in tFill)
             {

@@ -68,7 +68,8 @@ public class GameHandler : MonoBehaviour
         // BEFORE WE RUN NEXT LEVEL, LETS CHECK FOR MORE SAVE DATA!!
         List<List<Color>> data = _dataSave.ReadGameData();
 
-        if (data == _dataSave.ListEmpty)
+        // TODO: reimplement save
+        if (true) // data == _dataSave.ListEmpty
         {
             Debug.Log("NO SAVE DATA FOUND, GENERATING NEW LEVEL");
             // we continue with our normal code
@@ -118,52 +119,26 @@ public class GameHandler : MonoBehaviour
         levelText.text = "Level: " + _levelCount.ToString();
     }
 
-    // Update is called once per frame
-    private void Update()
+
+    public void TubePressed(TubeHandler tubeHandler)
     {
-        if (_inGUI)
+        if (_selectedBall == null)
         {
-            return;
-        }
-
-        if (!Input.GetMouseButtonDown(0))
-        {
-            return;
-        }
-
-        if (Camera.main is null)
-        {
-            throw new NullReferenceException();
-        }
-
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        worldPos.z = 0f;
-
-        Collider2D hit = Physics2D.OverlapPoint(worldPos);
-
-        if (hit != null && hit.gameObject.CompareTag("Tube"))
-        {
-            Debug.Log("Capsule clicked!");
-            if (_selectedBall == null)
-            {
-                SelectBall(hit.gameObject);
-            }
-            else
-            {
-                PutBall(hit.gameObject);
-            }
+            SelectBall(tubeHandler);
         }
         else
         {
-            Debug.Log("no capsule");
+            PutBall(tubeHandler);
         }
+
+
     }
 
     private int GetNumberOfTubes()
     {
         int val;
 
-        // this weird ahh code basically just makes it scale slower past 7 tubes (1 row)
+        // this weird ahh code basically just makes it scale slower past 5 tubes (1 row)
         if (_levelCount < 9)
         {
             val = (int)Mathf.Floor(_levelCount / 3) + 5;
@@ -191,54 +166,61 @@ public class GameHandler : MonoBehaviour
         return val;
     }
 
-    private void SelectBall(GameObject tube)
+    /*
+     * This function will take a ball from a tube
+     * and then put in the "open space"
+     */
+    private void SelectBall(TubeHandler tubeHandler)
     {
-        /*
-         * This function will take a ball from a tube
-         * and then put in the "open space"
-         */
+        var ball = tubeHandler.PopBall();
 
-        GameObject ball = tube.GetComponent<TubeHandler>().PopBall();
-
-        if (!ball.CompareTag("Ball"))
+        if (ball == null)
         {
-            return; // this means that our tube is empty (or completed!)
+            return; // tube is empty or completed
         }
 
-        float tubeHeight = tube.GetComponent<SpriteRenderer>().bounds.size.y;
+        RectTransform tubeRect = tubeHandler.gameObject.GetComponent<RectTransform>();
 
-        float top = tube.transform.position.y + (tubeHeight / 2);
+        // GetComponent<RectTransform>() on a UI element gives anchored position,
+        // use anchoredPosition instead of transform.position for UI space
+        float tubeHeight = tubeRect.rect.height;
+        float top = tubeRect.anchoredPosition.y + (tubeHeight / 2);
 
-        Debug.Log("Top: " + top + " ; y: " + tube.transform.position.y + " ; height: " + tubeHeight);
+        Debug.Log("Top: " + top + " ; y: " + tubeRect.anchoredPosition.y + " ; height: " + tubeHeight);
 
-        // hopefully this works
         BallData bd = ball.GetComponent<BallData>();
-        bd.animationHandler.AddAnimationToQueue(new Vector3(ball.transform.position.x, top + 0.25f, 0), 0.25f, true);
+        RectTransform ballRect = ball.GetComponent<RectTransform>();
+
+        bd.animationHandler.AddAnimationToQueue(
+            new Vector2(ballRect.anchoredPosition.x, top + 25f), // UI units, not world units
+            0.25f,
+            true
+        );
 
         _selectedBall = ball;
-        bd.previousTube = tube;
+        bd.previousTube = tubeHandler.gameObject;
     }
 
-    private void PutBall(GameObject tube)
+    private void PutBall(TubeHandler tubeHandler)
     {
-        // ReSharper disable once InconsistentNaming
-        TubeHandler t_h = tube.GetComponent<TubeHandler>();
         BallData bd = _selectedBall.GetComponent<BallData>();
-        if (tube == bd.previousTube)
+        TubeHandler previousTubeHandler = bd.previousTube.GetComponent<TubeHandler>();
+
+        if (tubeHandler == previousTubeHandler)
         {
-            // basically just force the ball on since it was our previous tube
-            t_h.AddBall(_selectedBall, true);
+            // Force the ball back since it was our previous tube
+            tubeHandler.AddBall(_selectedBall, true);
             _selectedBall = null;
             return;
         }
 
-        bool result = t_h.AddBall(_selectedBall);
+        bool result = tubeHandler.AddBall(_selectedBall);
 
         if (result)
         {
             _moveCount++;
-            // push this move (selectedBall, (from) selectedBall.previous, (to) tube)
-            _moveList.Push(new List<GameObject>() { _selectedBall, bd.previousTube, tube });
+            // Push this move (selectedBall, (from) previousTube, (to) tubeHandler.gameObject)
+            _moveList.Push(new List<GameObject>() { _selectedBall, bd.previousTube, tubeHandler.gameObject });
             _selectedBall = null;
             bool done = IsGameOver();
 
@@ -247,7 +229,6 @@ public class GameHandler : MonoBehaviour
                 Debug.Log("Game completed, drawing objects and creating completions");
                 foreach (GameObject t in _gameMakerHandler.tubes)
                 {
-                    // ensures all tubes (including empties) are drawn to be solved
                     t.GetComponent<TubeHandler>().DrawCompletion();
                 }
 
@@ -265,7 +246,6 @@ public class GameHandler : MonoBehaviour
         }
 
         bd.ShakeBall();
-        // ^ above bug HOPEFULLY is fixed!!
     }
 
     private bool IsGameOver()

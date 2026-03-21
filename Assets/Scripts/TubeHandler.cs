@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -169,13 +170,12 @@ public class TubeHandler : MonoBehaviour
         return true;
     }
 
+    [CanBeNull]
     public GameObject PopBall()
     {
         if (Balls.Count < 1 || solved)
         {
-            GameObject obj = new GameObject();
-            Destroy(obj, 0.5f);
-            return obj;
+            return null;
         }
 
         return Balls.Pop();
