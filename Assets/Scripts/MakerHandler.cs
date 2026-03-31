@@ -290,7 +290,8 @@ public class MakerHandler : MonoBehaviour
 
         float spacingTop = (Screen.width - Padding) / (rowLimit + 1);
 
-        float y = extraTubePositioner.transform.position.y + obj.transform.localScale.y;
+        // TODO: this needs to be updated
+        float y = -50;
         float x = (Padding / 2) + (spacingTop / 2) + (spacingTop * rowLimit);
 
         float xWorldCoords = Camera.main.ScreenToWorldPoint(new Vector3(x, 0, 0)).x;
